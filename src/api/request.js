@@ -3,9 +3,7 @@ import { useToken } from '@/composables/token'
 
 const { getToken } = useToken()
 
-const instance = axios.create()
-
-instance.interceptors.request.use(
+axios.interceptors.request.use(
   function (config) {
     const { accessToken } = getToken()
     config.headers['Authorization'] = `Bearer ${accessToken}`
@@ -16,7 +14,7 @@ instance.interceptors.request.use(
   },
 )
 
-instance.interceptors.response.use(
+axios.interceptors.response.use(
   function (response) {
     return response.data
   },
@@ -25,4 +23,4 @@ instance.interceptors.response.use(
   },
 )
 
-export { instance }
+export { axios }
