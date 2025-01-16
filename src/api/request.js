@@ -6,7 +6,9 @@ const { getToken } = useToken()
 axios.interceptors.request.use(
   function (config) {
     const { accessToken } = getToken()
-    config.headers['Authorization'] = `Bearer ${accessToken}`
+    if (accessToken) {
+      config.headers['Authorization'] = `Bearer ${accessToken}`
+    }
     return config
   },
   function (error) {
