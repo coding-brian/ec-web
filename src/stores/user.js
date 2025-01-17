@@ -20,25 +20,17 @@ export const useUserStore = defineStore(
     const { token } = storeToRefs(tokenStore)
 
     const userLoginAsync = async ({ account, password }) => {
-      try {
-        token.value = await loginAsync({ account, password })
-        setUser(token.value)
-        autoRefresh(token.value)
-        return true
-      } catch (ex) {
-        throw ex
-      }
+      token.value = await loginAsync({ account, password })
+      setUser(token.value)
+      autoRefresh(token.value)
+      return true
     }
 
     const freshUserAsync = async () => {
-      try {
-        token.value = await refreshTokenAsync({ refreshToken: token.value.refreshToken })
-        setUser(token.value)
-        autoRefresh(token.value)
-        return true
-      } catch (ex) {
-        throw ex
-      }
+      token.value = await refreshTokenAsync({ refreshToken: token.value.refreshToken })
+      setUser(token.value)
+      autoRefresh(token.value)
+      return true
     }
 
     const setUser = (token) => {

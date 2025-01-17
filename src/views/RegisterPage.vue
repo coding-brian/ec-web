@@ -38,7 +38,7 @@ const checkPhone = () => {
 }
 
 const check = () => {
-  const result = true
+  let result = true
 
   if (!checkPassword() || !checkEmail()) {
     result = false

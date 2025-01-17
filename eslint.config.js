@@ -6,8 +6,10 @@ export default [
   {
     name: 'app/files-to-lint',
     files: ['**/*.{js,mjs,jsx,vue}'],
-    globals: {
-      process: 'readonly', // 定義 process 為只讀全域變數
+    languageOptions: {
+      globals: {
+        process: 'readonly', // 定義 process 為只讀全域變數
+      },
     },
   },
   {
