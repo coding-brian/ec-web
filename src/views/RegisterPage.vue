@@ -1,7 +1,7 @@
 <script setup>
 import { reactive } from 'vue'
 import { createAsync, createCaptchaAsync } from '@/api/ecapi'
-import { debounce, flatMap } from 'lodash-es'
+import { debounce, isNull } from 'lodash-es'
 
 const form = reactive({
   phone: null,
@@ -35,11 +35,6 @@ const checkEmail = () => {
 const checkPhone = () => {
   if (!form.phone) return false
   return true
-}
-
-const isNull = (value) => {
-  if (!value) return true
-  return false
 }
 
 const check = () => {
@@ -92,13 +87,13 @@ const submitAsync = debounce(async () => {
       <div>
         <span>密碼*</span>
         <div>
-          <input type="text" v-model="form.password" />
+          <input type="password" v-model="form.password" />
         </div>
       </div>
       <div>
         <span>確認密碼*</span>
         <div>
-          <input type="text" v-model="form.confirmedPassword" />
+          <input type="password" v-model="form.confirmedPassword" />
         </div>
       </div>
       <div>

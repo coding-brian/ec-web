@@ -1,0 +1,5 @@
+{
+    "systemError": "0000",
+    "accountError": "0001",
+    "accountOrPasswordError": "0002"
+}
