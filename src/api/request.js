@@ -1,15 +1,13 @@
 import axios from 'axios'
-import { useToken } from '@/composables/token'
-
-const { getToken } = useToken()
+import { useTokenStore } from '@/stores/token'
 
 const createAxiosInstance = ({ baseURL }) => {
   const instance = axios.create({ baseURL })
   instance.interceptors.request.use(
     function (config) {
-      const { accessToken } = getToken()
-      if (accessToken) {
-        config.headers['Authorization'] = `Bearer ${accessToken}`
+      const tokenStore = useTokenStore()
+      if (tokenStore.token && tokenStore.token.accessToken) {
+        config.headers['Authorization'] = `Bearer ${tokenStore.token.accessToken}`
       }
       return config
     },

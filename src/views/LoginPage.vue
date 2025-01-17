@@ -1,9 +1,9 @@
 <script setup>
 import { reactive } from 'vue'
 import { debounce, isNull } from 'lodash-es'
-import { useUser } from '@/composables/user'
+import { useUserStore } from '@/stores/user'
 
-const { userLoginAsync, user } = useUser()
+const userStore = useUserStore()
 
 const form = reactive({
   account: null,
@@ -28,7 +28,7 @@ const check = () => {
 const submitAsync = debounce(async () => {
   try {
     if (!check()) return false
-    await userLoginAsync(form)
+    await userStore.userLoginAsync(form)
     errorResponse.isSuccess = true
 
     // TODO: 這邊要實作去登入後的頁面
@@ -43,6 +43,7 @@ const submitAsync = debounce(async () => {
 
 <template>
   <div>
+    {{ userStore.user }}
     <div>
       <span>帳號:</span>
       <div>

@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { useUser } from '@/composables/user'
+import { useUserStore } from '@/stores/user'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -32,8 +32,8 @@ const router = createRouter({
 })
 
 router.beforeEach((to) => {
-  const { IsAuthorizated } = useUser()
-  if (to.meta.requireAuth && !IsAuthorizated()) return { name: 'login' }
+  const userStore = useUserStore()
+  if (to.meta.requireAuth && !userStore.IsAuthorizated()) return { name: 'login' }
 })
 
 export default router
