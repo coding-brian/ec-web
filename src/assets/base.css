@@ -1,3 +1,84 @@
 /* color palette from <https://github.com/vuejs/theme> */
 :root {
+  --peru: #d87d4a;
+  --chinese-black: #101010;
+  --anti-flash-white: #f1f1f1;
+  --lotion: #fafafa;
+  --very-light-tangelo: #fbaf85;
+}
+
+* {
+  font-family: 'Manrope', serif;
+}
+
+.h1-manrope-bold {
+  font-size: 3.5rem;
+  line-height: 3.625rem;
+  letter-spacing: 0.125rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.h2-manrope-bold {
+  font-size: 2.5rem;
+  line-height: 2.75rem;
+  letter-spacing: 0.09375rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.h3-manrope-bold {
+  font-size: 2rem;
+  line-height: 2.25rem;
+  letter-spacing: 0.071875rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.h4-manrope-bold {
+  font-size: 1.75rem;
+  line-height: 2.375rem;
+  letter-spacing: 0.125rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.h5-manrope-bold {
+  font-size: 1.5rem;
+  line-height: 2.0625rem;
+  letter-spacing: 0.10625rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.h6-manrope-bold {
+  font-size: 1.125rem;
+  line-height: 1.5rem;
+  letter-spacing: 0.08125rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.overline-manrope-regular {
+  font-size: 1.125rem;
+  line-height: 1.1875rem;
+  letter-spacing: 0.625rem;
+  text-transform: uppercase;
+  font-weight: 400;
+  color: var(--peru);
+}
+
+.sub-title-manrope-bold {
+  font-size: 0.8125rem;
+  line-height: 1.5625rem;
+  letter-spacing: 0.0625rem;
+  text-transform: uppercase;
+  font-weight: bold;
+  color: var(--peru);
+}
+
+.body-manrope-medium {
+  font-size: 0.9375rem;
+  line-height: 1.5625rem;
+  font-weight: 500;
 }
