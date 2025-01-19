@@ -11,7 +11,16 @@ export const useTokenStore = defineStore(
       tokenType: null,
     })
 
-    return { token }
+    const resetToken = () => {
+      token.value = {
+        accessToken: null,
+        refreshToken: null,
+        expiresIn: null,
+        tokenType: null,
+      }
+    }
+
+    return { token, resetToken }
   },
   {
     persist: {

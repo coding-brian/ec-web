@@ -27,13 +27,22 @@ const router = createRouter({
         requireAuth: false,
       },
       component: () => import('../views/LoginPage.vue'),
+      beforeEnter() {
+        const userStore = useUserStore()
+        // TODO 如果已經登入狀態，再去登入頁，要導去特定一頁
+        if (userStore.IsAuthorizated()) return { name: 'index' }
+
+        return true
+      },
     },
   ],
 })
 
-router.beforeEach((to) => {
+router.beforeResolve((to) => {
   const userStore = useUserStore()
   if (to.meta.requireAuth && !userStore.IsAuthorizated()) return { name: 'login' }
+
+  return true
 })
 
 export default router

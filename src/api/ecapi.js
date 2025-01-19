@@ -8,4 +8,5 @@ export const createAsync = async (params) => await request.post('/member', param
 
 export const createCaptchaAsync = async (params) => await request.post('/member/captcha', params)
 
-export const refreshTokenAsync = async (params) => await request.post('/token/refresh', params)
+export const refreshTokenAsync = async (params, signal) =>
+  await request.post('/token/refresh', params, { signal })

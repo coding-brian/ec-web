@@ -16,50 +16,71 @@ export const useUserStore = defineStore(
       expireDateTime: null,
     })
 
+    let timeoutId = null
+    const refreshTokenApiController = new AbortController()
+
     const tokenStore = useTokenStore()
     const { token } = storeToRefs(tokenStore)
 
     const userLoginAsync = async ({ account, password }) => {
       token.value = await loginAsync({ account, password })
-      setUser(token.value)
+      setUser(token.value.accessToken)
       autoRefresh(token.value)
       return true
     }
 
-    const freshUserAsync = async () => {
-      token.value = await refreshTokenAsync({ refreshToken: token.value.refreshToken })
-      setUser(token.value)
-      autoRefresh(token.value)
+    const refreshUserAsync = async () => {
+      token.value = await refreshTokenAsync({
+        refreshToken: token.value.refreshToken,
+        signal: refreshTokenApiController.signal,
+      })
+
+      setUser(token.value.accessToken)
+      autoRefresh(token.value.expiresIn)
       return true
     }
 
-    const setUser = (token) => {
-      const { email, exp, sub } = jwtDecode(token.accessToken)
+    const setUser = (accessToken) => {
+      const { name, email, exp, sub } = jwtDecode(accessToken)
       user.expireDateTime = fromUnixTime(exp)
       user.email = email
       user.id = sub
+      user.name = name
+    }
+
+    const resetUser = () => {
+      user.id = null
+      user.expireDateTime = null
+      user.email = null
+      user.name = null
     }
 
     const IsAuthorizated = () => {
-      if (!token.value || new Date() > user.expireDateTime) return false
+      if (!token.value || !token.value.accessToken || new Date() > user.expireDateTime) return false
       return true
     }
 
-    const autoRefresh = (token) => {
+    const autoRefresh = (expiresIn) => {
       const bufferTime = 10 * 60
-      console.log()
-      ;(function () {
-        const timeoutId = setTimeout(
-          async () => {
-            await freshUserAsync()
-            clearTimeout(timeoutId)
-          },
-          (token.expiresIn - bufferTime) * 1000,
-        )
-      })()
+      timeoutId = setTimeout(
+        async () => {
+          await refreshUserAsync()
+          clearTimeout(timeoutId)
+        },
+        (expiresIn - bufferTime) * 1000,
+      )
     }
 
-    return { user, userLoginAsync, freshUserAsync, IsAuthorizated }
+    const userLogout = () => {
+      refreshTokenApiController.abort()
+      clearTimeout(timeoutId)
+      tokenStore.resetToken()
+      resetUser()
+
+      location.reload(true)
+    }
+
+    return { user, userLoginAsync, refreshUserAsync, IsAuthorizated, userLogout }
   },
   {
     persist: {
