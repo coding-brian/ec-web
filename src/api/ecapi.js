@@ -1,6 +1,6 @@
 import { createAxiosInstance } from './request'
 
-const request = createAxiosInstance({ baseURL: process.env.VITE_APP_API_URL })
+const request = createAxiosInstance({ baseURL: import.meta.env.VITE_APP_API_URL })
 
 export const loginAsync = async (loginDto) => await request.post(`/login`, loginDto)
 

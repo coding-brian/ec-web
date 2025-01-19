@@ -43,7 +43,6 @@ const submitAsync = debounce(async () => {
 
 <template>
   <div>
-    {{ userStore.user }}
     <div>
       <span>帳號:</span>
       <div>
