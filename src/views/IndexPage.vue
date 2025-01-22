@@ -2,7 +2,6 @@
 import { getProductsAsync, getProductCategoriesAsync } from '@/api/ecapi'
 import { computed, onMounted, ref } from 'vue'
 import { useUserStore } from '@/stores/user'
-import { Swiper, SwiperSlide } from 'swiper/vue'
 // import { Autoplay, Navigation, Pagination } from 'swiper/modules'
 // import { RouterLink } from 'vue-router'
 
