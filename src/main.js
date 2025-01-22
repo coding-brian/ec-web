@@ -1,4 +1,7 @@
 import './assets/main.css'
+import 'swiper/css'
+import 'swiper/css/navigation'
+import 'swiper/css/pagination'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'

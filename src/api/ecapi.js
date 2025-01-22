@@ -10,3 +10,11 @@ export const createCaptchaAsync = async (params) => await request.post('/member/
 
 export const refreshTokenAsync = async (params, signal) =>
   await request.post('/token/refresh', params, { signal })
+
+export const getNewsAsync = async () => await request.get('/news')
+
+export const getProductsAsync = async (params) => await request.get('/products', { params })
+
+export const getStoreAsync = async () => await request.get('/store')
+
+export const getProductCategoriesAsync = async () => await request.get('/productCategories')
