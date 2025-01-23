@@ -1,4 +1,6 @@
 @import './base.css';
+@import './header.css';
+@import './footer.css';
 
 body {
   height: 100vh;
@@ -8,75 +10,134 @@ body {
   align-items: center;
 }
 
-.banner {
+main {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-size: cover; /* 確保背景填滿 */
-  background-repeat: no-repeat;
+  padding-top: 120px;
+  padding-bottom: 200px;
 }
 
-.header-container {
-  width: 1110px;
-  display: flex; /* 啟用 Flexbox */
-  flex-direction: column; /* 垂直排列子元素 */
-  height: 100%; /* 父容器高度 */
-}
-
-.header {
+.product-category-group {
   display: flex;
+  gap: 30px;
+}
+
+.product-category {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 284px;
+  width: 350px;
+  cursor: pointer;
+}
+
+.product-category:hover .product-categoey-shop > span {
+  color: var(--peru);
+}
+
+.product-categoey-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  align-items: center;
+  gap: 15px;
+  position: absolute;
+  width: 100%;
+  z-index: -1;
+  top: 25%;
+  height: 75%;
+  background-color: var(--anti-flash-white);
+  border-radius: 8px;
+}
+.product-categoey-name {
+  font-size: 18px;
+  letter-spacing: 1.29px;
+  font-weight: bold;
+  color: black;
+}
+
+.product-categoey-shop {
+  padding-bottom: 30px;
+  display: flex;
+  align-items: center;
   justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px white solid;
-  padding-top: 32px;
-  padding-bottom: 36px;
+  width: 57px;
 }
 
-.navbar {
-  display: flex;
-  gap: 34px;
-}
-
-.content-container {
-  max-width: 398px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  flex: 1;
-}
-
-.content {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 24px;
-}
-
-.content-container > button {
-  width: 160px;
-  margin-top: 40px;
-  background-color: var(--peru);
+.product-categoey-shop > span {
   font-size: 13px;
   letter-spacing: 1px;
   font-weight: bold;
-  color: white;
-  padding-top: 15px;
-  padding-bottom: 15px;
-  cursor: pointer;
-  border: 0;
+  opacity: 50%;
 }
 
-.content-description {
-  font-weight: 500;
-  font-size: 15px;
-  line-height: 25px;
-  color: white;
-  opacity: 75%;
+.product-category > img {
+  object-fit: contain;
+  max-width: 70%; /* 縮放圖片寬度到不超過父容器 */
+  max-height: 70%; /* 縮放圖片高度到不超過父容器 */
 }
 
-.new-product-text {
-  color: white;
-  font-size: 14px;
-  letter-spacing: 10px;
-  opacity: 49.64%;
+.product-group {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  margin-top: 168px;
+}
+
+.news {
+  display: flex;
+  gap: 125px;
+  margin-top: 200px;
+}
+
+.news > img {
+  /* object-fit: cover; */
+}
+
+/* Tablet */
+@media screen and (max-width: 1024) {
+  main {
+    padding-top: 96px;
+    padding-bottom: 96px;
+  }
+
+  .product-category-group {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .product-group {
+    gap: 32px;
+    margin-top: 96px;
+  }
+
+  .news {
+    flex-direction: column;
+    gap: 63px;
+    margin-top: 96px;
+  }
+}
+
+/* Mobile */
+@media screen and (max-width: 767) {
+  main {
+    padding-top: 40px;
+    padding-bottom: 120px;
+  }
+
+  .product-category-group {
+    gap: 16px;
+  }
+
+  .product-group {
+    gap: 24px;
+    margin-top: 120px;
+  }
+
+  .news {
+    margin-top: 120px;
+    gap: 40px;
+  }
 }

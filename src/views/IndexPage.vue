@@ -2,7 +2,6 @@
 import { getProductsAsync, getProductCategoriesAsync } from '@/api/ecapi'
 import { computed, onMounted, ref } from 'vue'
 import { useUserStore } from '@/stores/user'
-// import { Autoplay, Navigation, Pagination } from 'swiper/modules'
 // import { RouterLink } from 'vue-router'
 
 const products = ref()
@@ -61,7 +60,23 @@ onMounted(async () => {
   })
 
   if (productInBanner.value) {
-    setDivSizeToImage(productInBanner.value.images.filter((item) => item.isBanner)[0].url)
+    let objectProperty = 'isDesktopSize'
+    switch (getDeviceType()) {
+      case deviceType.mobile:
+        objectProperty = 'isMobileSize'
+        break
+      case deviceType.tablet:
+        objectProperty = 'isTabletSize'
+        break
+      case deviceType.desktop:
+        objectProperty = 'isDesktopSize'
+        break
+    }
+
+    const { url } = productInBanner.value.images.filter(
+      (item) => item.isBanner && item[objectProperty],
+    )[0]
+    setDivSizeToImage(url)
   }
 
   productCategories.value = await getProductCategoriesAsync()
@@ -91,9 +106,48 @@ onMounted(async () => {
       </div>
     </div>
   </div>
-  <main></main>
+  <main>
+    <div class="product-category-group">
+      <div class="product-category">
+        <img src="https://i.imgur.com/puiG6CP.png" alt="" srcset="" />
+        <div class="product-categoey-content">
+          <span class="product-categoey-name">HEADPHONES</span>
+          <div class="product-categoey-shop">
+            <span>SHOP</span>
+            <img src="/images/icon-arrow-right.svg" alt="" srcset="" />
+          </div>
+        </div>
+      </div>
+      <div class="product-category">
+        <img src="https://i.imgur.com/puiG6CP.png" alt="" srcset="" />
+        <div class="product-categoey-content">
+          <span class="product-categoey-name">HEADPHONES</span>
+          <div class="product-categoey-shop">
+            <span>SHOP</span>
+            <img src="/images/icon-arrow-right.svg" alt="" srcset="" />
+          </div>
+        </div>
+      </div>
+      <div class="product-category">
+        <img src="https://i.imgur.com/puiG6CP.png" alt="" srcset="" />
+        <div class="product-categoey-content">
+          <span class="product-categoey-name">HEADPHONES</span>
+          <div class="product-categoey-shop">
+            <span>SHOP</span>
+            <img src="/images/icon-arrow-right.svg" alt="" srcset="" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="product-group">
+      <div class="prorduct">product-4</div>
+      <div class="prorduct">product-5</div>
+      <div class="prorduct">product-6</div>
+    </div>
+    <div class="news">
+      <div class="news-content">news-1</div>
+      <img src="" alt="" />
+    </div>
+  </main>
   <footer></footer>
-  <!-- <RouterLink :to="'/register'">register</RouterLink><br />
-  <RouterLink :to="'/login'">login</RouterLink>
-  <button @click="logout">logout</button> -->
 </template>

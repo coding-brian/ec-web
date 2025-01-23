@@ -1,0 +1,72 @@
+.banner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-size: cover; /* 確保背景填滿 */
+  background-repeat: no-repeat;
+}
+
+.header-container {
+  width: 1110px;
+  display: flex; /* 啟用 Flexbox */
+  flex-direction: column; /* 垂直排列子元素 */
+  height: 100%; /* 父容器高度 */
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px white solid;
+  padding-top: 32px;
+  padding-bottom: 36px;
+}
+
+.navbar {
+  display: flex;
+  gap: 34px;
+}
+
+.content-container {
+  max-width: 398px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 24px;
+}
+
+.content-container > button {
+  width: 160px;
+  margin-top: 40px;
+  background-color: var(--peru);
+  font-size: 13px;
+  letter-spacing: 1px;
+  font-weight: bold;
+  color: white;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  cursor: pointer;
+  border: 0;
+}
+
+.content-description {
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 25px;
+  color: white;
+  opacity: 75%;
+}
+
+.new-product-text {
+  color: white;
+  font-size: 14px;
+  letter-spacing: 10px;
+  opacity: 49.64%;
+}
