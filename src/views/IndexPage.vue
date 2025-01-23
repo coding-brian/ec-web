@@ -7,11 +7,44 @@ import { useUserStore } from '@/stores/user'
 const products = ref()
 const productCategories = ref()
 const userStore = useUserStore()
+let objectProperty = 'isDesktopSize'
 
 const productInBanner = computed(() => {
   if (!products.value || products.value.length === 0) return null
 
-  return products.value.filter((product) => product.isInBanner)[0]
+  const result = products.value.filter((product) => product.isInBanner && product.isInHomepage)[0]
+
+  const { url } = result.images.filter((item) => item.isBanner && item[objectProperty])[0]
+
+  setDivSizeToImage(url)
+
+  return result
+})
+
+const productInHomepage = computed(() => {
+  if (!products.value || products.value.length === 0) return null
+
+  const result = products.value
+    .filter((product) => product.isInHomepage && product.isInMainSection)
+    .sort((a, b) => a.priority - b.priority)
+
+  return result
+})
+
+const productCategoryInHomepage = computed(() => {
+  if (!productCategories.value || productCategories.value.length <= 0) return null
+
+  const result = productCategories.value.filter((item) => item.isInHomepage)
+
+  for (let productCategory of result) {
+    if (productCategory.images && productCategory.images.length > 0) {
+      productCategory.image = productCategory.images.filter(
+        (item) => item.isInBanner && item[objectProperty],
+      )[0]
+      delete productCategory.images
+    }
+  }
+  return result
 })
 
 const deviceType = {
@@ -51,6 +84,18 @@ const setDivSizeToImage = (imageUrl) => {
   img.src = imageUrl
 }
 
+switch (getDeviceType()) {
+  case deviceType.mobile:
+    objectProperty = 'isMobileSize'
+    break
+  case deviceType.tablet:
+    objectProperty = 'isTabletSize'
+    break
+  case deviceType.desktop:
+    objectProperty = 'isDesktopSize'
+    break
+}
+
 onMounted(async () => {
   products.value = await getProductsAsync({
     isInBanner: true,
@@ -58,26 +103,6 @@ onMounted(async () => {
     isInHomepage: true,
     operator: 0,
   })
-
-  if (productInBanner.value) {
-    let objectProperty = 'isDesktopSize'
-    switch (getDeviceType()) {
-      case deviceType.mobile:
-        objectProperty = 'isMobileSize'
-        break
-      case deviceType.tablet:
-        objectProperty = 'isTabletSize'
-        break
-      case deviceType.desktop:
-        objectProperty = 'isDesktopSize'
-        break
-    }
-
-    const { url } = productInBanner.value.images.filter(
-      (item) => item.isBanner && item[objectProperty],
-    )[0]
-    setDivSizeToImage(url)
-  }
 
   productCategories.value = await getProductCategoriesAsync()
 })
@@ -107,31 +132,15 @@ onMounted(async () => {
     </div>
   </div>
   <main>
-    <div class="product-category-group">
-      <div class="product-category">
-        <img src="https://i.imgur.com/puiG6CP.png" alt="" srcset="" />
+    <div class="product-category-group" v-if="productCategoryInHomepage">
+      <div
+        class="product-category"
+        v-for="productCategory in productCategoryInHomepage"
+        :key="productCategory.id"
+      >
+        <img :src="productCategory.image.url" alt="" srcset="" v-if="productCategory.image" />
         <div class="product-categoey-content">
-          <span class="product-categoey-name">HEADPHONES</span>
-          <div class="product-categoey-shop">
-            <span>SHOP</span>
-            <img src="/images/icon-arrow-right.svg" alt="" srcset="" />
-          </div>
-        </div>
-      </div>
-      <div class="product-category">
-        <img src="https://i.imgur.com/puiG6CP.png" alt="" srcset="" />
-        <div class="product-categoey-content">
-          <span class="product-categoey-name">HEADPHONES</span>
-          <div class="product-categoey-shop">
-            <span>SHOP</span>
-            <img src="/images/icon-arrow-right.svg" alt="" srcset="" />
-          </div>
-        </div>
-      </div>
-      <div class="product-category">
-        <img src="https://i.imgur.com/puiG6CP.png" alt="" srcset="" />
-        <div class="product-categoey-content">
-          <span class="product-categoey-name">HEADPHONES</span>
+          <span class="product-categoey-name">{{ productCategory.name }}</span>
           <div class="product-categoey-shop">
             <span>SHOP</span>
             <img src="/images/icon-arrow-right.svg" alt="" srcset="" />
@@ -139,10 +148,35 @@ onMounted(async () => {
         </div>
       </div>
     </div>
-    <div class="product-group">
-      <div class="prorduct">product-4</div>
-      <div class="prorduct">product-5</div>
-      <div class="prorduct">product-6</div>
+    <div class="product-group" v-if="productInHomepage">
+      <div class="product">
+        <div class="product-container">
+          <img :src="productInHomepage[0].images[0].url" alt="" srcset="" />
+          <div class="product-content">
+            <span class="product-content-name h1-manrope-bold white">{{
+              productInHomepage[0].name
+            }}</span>
+            <span class="product-content-description body-manrope-medium white">{{
+              productInHomepage[0].description
+            }}</span>
+            <button class="button-2-default">SEE PRODUCT</button>
+          </div>
+        </div>
+      </div>
+      <div class="product">
+        <img :src="productInHomepage[1].images[0].url" alt="" srcset="" />
+        <div class="product-content">
+          <span>{{ productInHomepage[1].name }}</span>
+          <button class="button-2-default">SEE PRODUCT</button>
+        </div>
+      </div>
+      <div class="product">
+        <img :src="productInHomepage[2].images[0].url" alt="" srcset="" />
+        <div class="product-content">
+          <span>{{ productInHomepage[2].name }}</span>
+          <button class="button-2-default">SEE PRODUCT</button>
+        </div>
+      </div>
     </div>
     <div class="news">
       <div class="news-content">news-1</div>

@@ -86,3 +86,17 @@
   line-height: 1.5625rem;
   font-weight: 500;
 }
+
+.button-2-default {
+  border: 1xp black solid;
+  width: 160px;
+  height: 48px;
+  font-size: 13px;
+  letter-spacing: 1px;
+  font-weight: bold;
+}
+
+.button-2-default:hover {
+  background-color: black;
+  color: white;
+}

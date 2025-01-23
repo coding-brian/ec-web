@@ -3,14 +3,17 @@
 @import './footer.css';
 
 body {
-  height: 100vh;
   margin: 0;
+}
+
+#app {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
 main {
+  width: 1110px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -75,8 +78,8 @@ main {
 
 .product-category > img {
   object-fit: contain;
-  max-width: 70%; /* 縮放圖片寬度到不超過父容器 */
-  max-height: 70%; /* 縮放圖片高度到不超過父容器 */
+  max-width: 70%;
+  max-height: 70%;
 }
 
 .product-group {
@@ -84,6 +87,97 @@ main {
   flex-direction: column;
   gap: 48px;
   margin-top: 168px;
+}
+
+.product {
+  border-radius: 8px;
+}
+
+.product:first-child {
+  height: 560px;
+  background-color: var(--peru);
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.product-container {
+  display: flex;
+  justify-content: center;
+}
+
+.product:first-child img {
+  width: 410px;
+  height: 493px;
+}
+
+.product:first-child .product-content {
+  display: flex;
+  flex-direction: column;
+  width: 349px;
+  height: 303px;
+  margin-left: 138px;
+}
+
+.product:first-child .product-content .product-content-name {
+  margin-bottom: 24px;
+}
+
+.product:first-child .product-content .product-content-description {
+  opacity: 75%;
+  margin-bottom: 40px;
+}
+
+.product:nth-child(2) {
+  position: relative;
+}
+
+.product:nth-child(2) img {
+  border-radius: 8px;
+}
+
+.product:nth-child(2) .product-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 32px;
+  margin-left: 95px;
+}
+
+.product:nth-child(2) .product-content span {
+  font-size: 28px;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+.product:nth-child(3) {
+  display: flex;
+  gap: 30px;
+}
+
+.product:nth-child(3) span {
+  font-size: 28px;
+  letter-spacing: 2px;
+  font-weight: bold;
+}
+
+.product:nth-child(3) img {
+  border-radius: 8px;
+}
+
+.product:nth-child(3) .product-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 32px;
+  border-radius: 8px;
+  width: 100%;
+  background-color: var(--anti-flash-white);
+  padding-left: 95px;
 }
 
 .news {
