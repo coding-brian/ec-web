@@ -1,12 +1,9 @@
 <script setup>
 import { getProductsAsync, getProductCategoriesAsync } from '@/api/ecapi'
 import { computed, onMounted, ref } from 'vue'
-import { useUserStore } from '@/stores/user'
-// import { RouterLink } from 'vue-router'
 
 const products = ref()
 const productCategories = ref()
-const userStore = useUserStore()
 let objectProperty = 'isDesktopSize'
 
 const productInBanner = computed(() => {
@@ -44,6 +41,7 @@ const productCategoryInHomepage = computed(() => {
       delete productCategory.images
     }
   }
+
   return result
 })
 
@@ -150,8 +148,12 @@ onMounted(async () => {
     </div>
     <div class="product-group" v-if="productInHomepage">
       <div class="product">
-        <div class="product-container">
-          <img :src="productInHomepage[0].images[0].url" alt="" srcset="" />
+        <div>
+          <img
+            :src="productInHomepage[0].images.filter((item) => item[objectProperty])[0].url"
+            alt=""
+            srcset=""
+          />
           <div class="product-content">
             <span class="product-content-name h1-manrope-bold white">{{
               productInHomepage[0].name
@@ -164,14 +166,22 @@ onMounted(async () => {
         </div>
       </div>
       <div class="product">
-        <img :src="productInHomepage[1].images[0].url" alt="" srcset="" />
+        <img
+          :src="productInHomepage[1].images.filter((item) => item[objectProperty])[0].url"
+          alt=""
+          srcset=""
+        />
         <div class="product-content">
           <span>{{ productInHomepage[1].name }}</span>
           <button class="button-2-default">SEE PRODUCT</button>
         </div>
       </div>
       <div class="product">
-        <img :src="productInHomepage[2].images[0].url" alt="" srcset="" />
+        <img
+          :src="productInHomepage[2].images.filter((item) => item[objectProperty])[0].url"
+          alt=""
+          srcset=""
+        />
         <div class="product-content">
           <span>{{ productInHomepage[2].name }}</span>
           <button class="button-2-default">SEE PRODUCT</button>

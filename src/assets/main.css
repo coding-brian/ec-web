@@ -16,7 +16,6 @@ main {
   width: 1110px;
   display: flex;
   flex-direction: column;
-  align-items: center;
   padding-top: 120px;
   padding-bottom: 200px;
 }
@@ -54,6 +53,7 @@ main {
   background-color: var(--anti-flash-white);
   border-radius: 8px;
 }
+
 .product-categoey-name {
   font-size: 18px;
   letter-spacing: 1.29px;
@@ -101,7 +101,7 @@ main {
   align-items: flex-end;
 }
 
-.product-container {
+.product:first-child > div {
   display: flex;
   justify-content: center;
 }
@@ -145,7 +145,7 @@ main {
   flex-direction: column;
   justify-content: center;
   gap: 32px;
-  margin-left: 95px;
+  padding-left: 95px;
 }
 
 .product:nth-child(2) .product-content span {
@@ -191,20 +191,59 @@ main {
 }
 
 /* Tablet */
-@media screen and (max-width: 1024) {
+@media screen and (max-width: 1024px) {
   main {
+    width: 689px;
     padding-top: 96px;
     padding-bottom: 96px;
   }
 
   .product-category-group {
-    flex-direction: column;
+    align-items: center;
     gap: 10px;
   }
 
   .product-group {
     gap: 32px;
     margin-top: 96px;
+  }
+
+  .product:first-child {
+    height: 720px;
+    align-items: center;
+  }
+
+  .product:first-child img {
+    width: 197px;
+    height: 237px;
+    margin-bottom: 64px;
+  }
+
+  .product:first-child .product-content {
+    text-align: center;
+    align-items: center;
+    margin-left: 0px;
+  }
+
+  .product:first-child > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .product:nth-child(3) {
+    width: 100%;
+    gap: 11px;
+  }
+
+  .product:nth-child(3) img {
+    width: 339px;
+  }
+
+  .product:nth-child(3) .product-content {
+    width: 339px;
+    padding-left: 40px;
   }
 
   .news {
@@ -215,19 +254,41 @@ main {
 }
 
 /* Mobile */
-@media screen and (max-width: 767) {
+@media screen and (max-width: 767px) {
   main {
+    width: 327px;
     padding-top: 40px;
     padding-bottom: 120px;
   }
 
   .product-category-group {
+    flex-direction: column;
     gap: 16px;
   }
 
   .product-group {
     gap: 24px;
     margin-top: 120px;
+  }
+
+  .product:nth-child(2) img {
+    width: 100%;
+  }
+
+  .product:nth-child(2) .product-content {
+    top: 0;
+    left: 0;
+    padding-left: 24px;
+  }
+
+  .product:nth-child(3) {
+    flex-direction: column;
+  }
+
+  .product:nth-child(3) .product-content {
+    box-sizing: border-box;
+    height: 200px;
+    padding-left: 24px;
   }
 
   .news {
