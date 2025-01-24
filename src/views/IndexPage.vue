@@ -1,10 +1,11 @@
 <script setup>
-import { getProductsAsync, getProductCategoriesAsync } from '@/api/ecapi'
+import { getProductsAsync, getProductCategoriesAsync, getNewsAsync } from '@/api/ecapi'
 import { computed, onMounted, ref } from 'vue'
 
+let objectProperty = 'isDesktopSize'
 const products = ref()
 const productCategories = ref()
-let objectProperty = 'isDesktopSize'
+const news = ref()
 
 const socialMedias = ref([
   {
@@ -121,6 +122,11 @@ onMounted(async () => {
   })
 
   productCategories.value = await getProductCategoriesAsync()
+
+  news.value = await getNewsAsync()
+  for (let item of news.value) {
+    item.images = item.images.filter((image) => image[objectProperty])
+  }
 })
 </script>
 
@@ -206,9 +212,12 @@ onMounted(async () => {
         </div>
       </div>
     </div>
-    <div class="news">
-      <div class="news-content">news-1</div>
-      <img src="" alt="" />
+    <div class="news" v-for="item in news" :key="item.id">
+      <div class="news-container">
+        <div class="news-title h2-manrope-bold">{{ item.title }}</div>
+        <div class="news-content sub-title-manrope-bold">{{ item.content }}</div>
+      </div>
+      <img :src="image.url" alt="" v-for="image in item.images" :key="image.id" />
     </div>
   </main>
   <footer>
