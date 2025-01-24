@@ -143,7 +143,7 @@ onMounted(async () => {
           <span class="h1-manrope-bold white">{{ productInBanner.name }}</span>
           <span class="content-description">{{ productInBanner.description }}</span>
         </div>
-        <button type="button">SEE PRODUCT</button>
+        <button class="button-1-default">SEE PRODUCT</button>
       </div>
     </div>
   </div>

@@ -50,17 +50,7 @@
 }
 
 .content-container > button {
-  width: 160px;
   margin-top: 40px;
-  background-color: var(--peru);
-  font-size: 13px;
-  letter-spacing: 1px;
-  font-weight: bold;
-  color: white;
-  padding-top: 15px;
-  padding-bottom: 15px;
-  cursor: pointer;
-  border: 0;
 }
 
 .content-description {
