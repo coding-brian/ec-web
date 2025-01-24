@@ -134,7 +134,9 @@ onMounted(async () => {
   <div class="banner">
     <div class="header-container">
       <div class="header">
-        <img src="/images/logo.svg" alt="" class="logo" />
+        <div class="logo-container">
+          <img class="logo" src="/images/logo.svg" alt="" />
+        </div>
         <div class="navbar white sub-title-manrope-bold">
           <span>HOME</span>
           <span>HEADPHONES</span>
