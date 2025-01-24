@@ -1,0 +1,25 @@
+.news {
+  display: flex;
+  gap: 125px;
+  margin-top: 200px;
+}
+
+.news > img {
+}
+
+/* Tablet */
+@media screen and (max-width: 1024px) {
+  .news {
+    flex-direction: column;
+    gap: 63px;
+    margin-top: 96px;
+  }
+}
+
+/* Mobile */
+@media screen and (max-width: 767px) {
+  .news {
+    margin-top: 120px;
+    gap: 40px;
+  }
+}

@@ -1,9 +1,11 @@
 .banner {
+  background-position: center;
+  background-repeat: no-repeat;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-size: cover; /* 確保背景填滿 */
-  background-repeat: no-repeat;
+  width: 100%;
+  height: 729px;
 }
 
 .header-container {
@@ -25,6 +27,11 @@
 .navbar {
   display: flex;
   gap: 34px;
+}
+
+.navbar span:hover {
+  color: var(--peru);
+  cursor: pointer;
 }
 
 .content-container {
@@ -69,4 +76,16 @@
   font-size: 14px;
   letter-spacing: 10px;
   opacity: 49.64%;
+}
+
+/* Tablet */
+@media screen and (max-width: 1024px) {
+  .header-container {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+/* Mobile */
+@media screen and (max-width: 767px) {
 }
