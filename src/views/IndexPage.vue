@@ -132,8 +132,8 @@ onMounted(async () => {
 
 <template>
   <div class="banner">
-    <div class="header-container">
-      <div class="header">
+    <header>
+      <div class="header-container">
         <div class="logo-container">
           <img class="logo" src="/images/logo.svg" alt="" />
         </div>
@@ -172,7 +172,7 @@ onMounted(async () => {
         </div>
         <button class="button-1-default">SEE PRODUCT</button>
       </div>
-    </div>
+    </header>
   </div>
   <main>
     <div class="product-category-group" v-if="productCategoryInHomepage">
