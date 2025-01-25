@@ -57,14 +57,16 @@ main {
   justify-content: end;
   align-items: center;
   gap: 15px;
-  z-index: -1;
+}
+
+.product-category > img {
+  z-index: 1;
 }
 
 .product-categoey-name {
   font-size: 18px;
   letter-spacing: 1.29px;
   font-weight: bold;
-  color: black;
 }
 
 .product-categoey-shop {

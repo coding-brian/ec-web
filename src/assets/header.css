@@ -30,10 +30,6 @@ header {
   gap: 34px;
 }
 
-.navbar span {
-  color: white;
-}
-
 .navbar span:hover {
   color: var(--peru);
   cursor: pointer;
@@ -81,10 +77,13 @@ header {
 
   header {
     height: 100%;
-    width: 689px;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding-right: 40px;
+    padding-left: 40px;
+    box-sizing: border-box;
   }
 
   .navbar {
@@ -95,7 +94,7 @@ header {
     background-color: rgba(0, 0, 0, 0.5); /* 黑色，50% 透明 */
     height: 100%;
     width: 100%;
-    z-index: 1;
+    z-index: 2;
   }
 
   .navbar .product-categoey-content {
@@ -106,11 +105,16 @@ header {
     z-index: 1;
   }
 
+  .navbar > span:first-child {
+    display: none;
+  }
+
   .navbar span {
     color: black;
   }
 
   .navbar > div {
+    height: auto;
     background-color: white;
     display: flex;
     justify-content: center;
@@ -134,14 +138,14 @@ header {
     gap: 42px;
   }
 
-  /* .logo-container::before {
+  .hamburger {
     content: '';
     width: 16px;
     height: 16px;
     background-image: url('/images/icon-hamburger.svg');
     background-position: center;
     background-repeat: no-repeat;
-  } */
+  }
 }
 
 /* Mobile */
