@@ -137,11 +137,30 @@ onMounted(async () => {
         <div class="logo-container">
           <img class="logo" src="/images/logo.svg" alt="" />
         </div>
-        <div class="navbar white sub-title-manrope-bold">
-          <span>HOME</span>
-          <span>HEADPHONES</span>
-          <span>SPEAKS</span>
-          <span>EARPHONES</span>
+        <div class="navbar">
+          <div>
+            <div class="product-category-group" v-if="productCategoryInHomepage">
+              <div
+                class="product-category"
+                v-for="productCategory in productCategoryInHomepage"
+                :key="productCategory.id"
+              >
+                <img
+                  :src="productCategory.image.url"
+                  alt=""
+                  srcset=""
+                  v-if="productCategory.image"
+                />
+                <div class="product-categoey-content">
+                  <span class="product-categoey-name">{{ productCategory.name }}</span>
+                  <div class="product-categoey-shop">
+                    <span>SHOP</span>
+                    <img src="/images/icon-arrow-right.svg" alt="" srcset="" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <img src="/images/icon-cart.svg" alt="" class="cart" />
       </div>

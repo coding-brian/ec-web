@@ -30,6 +30,10 @@
   gap: 34px;
 }
 
+.navbar span {
+  color: white;
+}
+
 .navbar span:hover {
   color: var(--peru);
   cursor: pointer;
@@ -75,10 +79,6 @@
     background-size: cover;
   }
 
-  .header {
-    /* position: relative; */
-  }
-
   .header-container {
     height: 100%;
     width: 689px;
@@ -87,17 +87,38 @@
     align-items: center;
   }
 
-  /* .navbar {
+  .navbar {
+    display: block;
     position: absolute;
     top: 94px;
     left: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* 黑色，50% 透明 */
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+  }
+
+  .navbar .product-categoey-content {
+    z-index: 0;
+  }
+
+  .navbar .product-category > img {
+    z-index: 1;
+  }
+
+  .navbar span {
+    color: black;
+  }
+
+  .navbar > div {
     background-color: white;
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
-    z-index: 0;
-  } */
+    padding-top: 56px;
+    padding-bottom: 67px;
+  }
 
   .content-container {
     align-items: center;
