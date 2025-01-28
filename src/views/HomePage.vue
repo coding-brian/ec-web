@@ -1,11 +1,14 @@
 <script setup>
-import { getProductsAsync, getProductCategoriesAsync, getNewsAsync } from '@/api/ecapi'
+import { getProductsAsync, getNewsAsync } from '@/api/ecapi'
 import { computed, onMounted, ref } from 'vue'
 import NavbarComponent from '@/components/NavbarComponent.vue'
 import { useDeviceSize } from '@/composables/deviceSize'
+import { useProductCategory } from '@/stores/productCategory'
+import { storeToRefs } from 'pinia'
 
 const products = ref()
-const productCategories = ref()
+const { productCategories } = storeToRefs(useProductCategory())
+
 const news = ref()
 const { objectProperty } = useDeviceSize()
 
@@ -43,7 +46,9 @@ const productInHomepage = computed(() => {
 const productCategoryInHomepage = computed(() => {
   if (!productCategories.value || productCategories.value.length <= 0) return null
 
-  const result = productCategories.value.filter((item) => item.isInHomepage)
+  const result = JSON.parse(
+    JSON.stringify(productCategories.value.filter((item) => item.isInHomepage)),
+  )
 
   for (let productCategory of result) {
     if (productCategory.images && productCategory.images.length > 0) {
@@ -72,8 +77,6 @@ onMounted(async () => {
     isInHomepage: true,
     operator: 0,
   })
-
-  productCategories.value = await getProductCategoriesAsync()
 
   news.value = await getNewsAsync()
   for (let item of news.value) {

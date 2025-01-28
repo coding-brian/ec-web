@@ -3,11 +3,14 @@ import { onMounted, ref, watch } from 'vue'
 import { useDeviceType } from '@/composables/deviceType'
 import deviceType from '@/const/deviceType.json'
 import { useDeviceSize } from '@/composables/deviceSize'
+import { storeToRefs } from 'pinia'
+import { useProductCategory } from '@/stores/productCategory'
+import { getProductCategoriesAsync } from '@/api/ecapi'
 
-const { productCategories, product } = defineProps({ productCategories: Array, product: Object })
-
+const { product } = defineProps({ product: Object })
 const { getDeviceType } = useDeviceType()
 const { objectProperty } = useDeviceSize()
+const { productCategories } = storeToRefs(useProductCategory())
 
 const isNavbarShow = ref(false)
 
@@ -25,20 +28,16 @@ const setDivSizeToImage = (imageUrl) => {
   img.src = imageUrl
 }
 
-onMounted(() => {
+onMounted(async () => {
+  productCategories.value = await getProductCategoriesAsync()
+
   if (getDeviceType() === deviceType.desktop) isNavbarShow.value = true
 })
 
 watch(
   () => product,
   () => {
-    if (product) {
-      console.log(objectProperty)
-
-      setDivSizeToImage(
-        product.images.filter((item) => item.isBanner && item[objectProperty])[0].url,
-      )
-    }
+    setDivSizeToImage(product.images.filter((item) => item.isBanner && item[objectProperty])[0].url)
   },
 )
 </script>

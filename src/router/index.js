@@ -10,7 +10,7 @@ const router = createRouter({
       meta: {
         requireAuth: false,
       },
-      component: () => import('../views/IndexPage.vue'),
+      component: () => import('../views/HomePage.vue'),
     },
     {
       path: '/register',
@@ -34,6 +34,11 @@ const router = createRouter({
 
         return true
       },
+    },
+    {
+      path: '/productCategory/:id',
+      name: 'productCategory',
+      component: () => import('@/views/ProductCategory.vue'),
     },
   ],
 })
