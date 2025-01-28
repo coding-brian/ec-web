@@ -1,18 +1,29 @@
 <script setup>
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, ref, computed } from 'vue'
 import { useDeviceType } from '@/composables/deviceType'
 import deviceType from '@/const/deviceType.json'
 import { useDeviceSize } from '@/composables/deviceSize'
 import { storeToRefs } from 'pinia'
 import { useProductCategory } from '@/stores/productCategory'
-import { getProductCategoriesAsync } from '@/api/ecapi'
+import { useProduct } from '@/stores/product'
+import { getProductCategoriesAsync, getProductsAsync } from '@/api/ecapi'
 
-const { product } = defineProps({ product: Object })
 const { getDeviceType } = useDeviceType()
 const { objectProperty } = useDeviceSize()
 const { productCategories } = storeToRefs(useProductCategory())
+const { products } = storeToRefs(useProduct())
 
 const isNavbarShow = ref(false)
+
+const productInBanner = computed(() => {
+  if (!products.value || products.value.length === 0) return null
+
+  const result = products.value.filter((product) => product.isInBanner && product.isInHomepage)[0]
+
+  setDivSizeToImage(result.images.filter((item) => item.isBanner && item[objectProperty])[0].url)
+
+  return result
+})
 
 const setDivSizeToImage = (imageUrl) => {
   const div = document.getElementsByClassName('banner')
@@ -29,17 +40,17 @@ const setDivSizeToImage = (imageUrl) => {
 }
 
 onMounted(async () => {
+  products.value = await getProductsAsync({
+    isInBanner: true,
+    isNewProduct: true,
+    isInHomepage: true,
+    operator: 0,
+  })
+
   productCategories.value = await getProductCategoriesAsync()
 
   if (getDeviceType() === deviceType.desktop) isNavbarShow.value = true
 })
-
-watch(
-  () => product,
-  () => {
-    setDivSizeToImage(product.images.filter((item) => item.isBanner && item[objectProperty])[0].url)
-  },
-)
 </script>
 
 <template>
@@ -92,11 +103,11 @@ watch(
         </div>
         <img src="/images/icon-cart.svg" alt="" class="cart" />
       </div>
-      <div class="content-container" v-if="product">
+      <div class="content-container" v-if="productInBanner">
         <div class="content">
-          <span class="new-product-text" v-if="product.isNewProduct">NEW PRODUCT</span>
-          <span class="h1-manrope-bold white">{{ product.name }}</span>
-          <span class="content-description">{{ product.description }}</span>
+          <span class="new-product-text" v-if="productInBanner.isNewProduct">NEW PRODUCT</span>
+          <span class="h1-manrope-bold white">{{ productInBanner.name }}</span>
+          <span class="content-description">{{ productInBanner.description }}</span>
         </div>
         <button class="button-1-default">SEE PRODUCT</button>
       </div>

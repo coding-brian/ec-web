@@ -1,13 +1,14 @@
 <script setup>
-import { getProductsAsync, getNewsAsync } from '@/api/ecapi'
+import { getNewsAsync } from '@/api/ecapi'
 import { computed, onMounted, ref } from 'vue'
 import NavbarComponent from '@/components/NavbarComponent.vue'
 import { useDeviceSize } from '@/composables/deviceSize'
 import { useProductCategory } from '@/stores/productCategory'
 import { storeToRefs } from 'pinia'
+import { useProduct } from '@/stores/product'
 
-const products = ref()
 const { productCategories } = storeToRefs(useProductCategory())
+const { products } = storeToRefs(useProduct())
 
 const news = ref()
 const { objectProperty } = useDeviceSize()
@@ -26,12 +27,6 @@ const socialMedias = ref([
     hoverUrl: '/images/icon-instagram-peru.svg',
   },
 ])
-
-const productInBanner = computed(() => {
-  if (!products.value || products.value.length === 0) return null
-
-  return products.value.filter((product) => product.isInBanner && product.isInHomepage)[0]
-})
 
 const productInHomepage = computed(() => {
   if (!products.value || products.value.length === 0) return null
@@ -71,13 +66,6 @@ const mouseleave = (e, socialMedia) => {
 }
 
 onMounted(async () => {
-  products.value = await getProductsAsync({
-    isInBanner: true,
-    isNewProduct: true,
-    isInHomepage: true,
-    operator: 0,
-  })
-
   news.value = await getNewsAsync()
   for (let item of news.value) {
     item.images = item.images.filter((image) => image[objectProperty])
@@ -86,7 +74,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <NavbarComponent :product-categories="productCategoryInHomepage" :product="productInBanner" />
+  <NavbarComponent />
   <main>
     <div class="product-category-group" v-if="productCategoryInHomepage">
       <div
