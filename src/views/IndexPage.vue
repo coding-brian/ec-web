@@ -1,12 +1,13 @@
 <script setup>
 import { getProductsAsync, getProductCategoriesAsync, getNewsAsync } from '@/api/ecapi'
 import { computed, onMounted, ref } from 'vue'
+import NavbarComponent from '@/components/NavbarComponent.vue'
+import { useDeviceSize } from '@/composables/deviceSize'
 
-let objectProperty = 'isDesktopSize'
 const products = ref()
 const productCategories = ref()
 const news = ref()
-const isNavbarShow = ref(false)
+const { objectProperty } = useDeviceSize()
 
 const socialMedias = ref([
   {
@@ -26,13 +27,7 @@ const socialMedias = ref([
 const productInBanner = computed(() => {
   if (!products.value || products.value.length === 0) return null
 
-  const result = products.value.filter((product) => product.isInBanner && product.isInHomepage)[0]
-
-  const { url } = result.images.filter((item) => item.isBanner && item[objectProperty])[0]
-
-  setDivSizeToImage(url)
-
-  return result
+  return products.value.filter((product) => product.isInBanner && product.isInHomepage)[0]
 })
 
 const productInHomepage = computed(() => {
@@ -62,38 +57,6 @@ const productCategoryInHomepage = computed(() => {
   return result
 })
 
-const deviceType = {
-  mobile: 0,
-  tablet: 1,
-  desktop: 2,
-}
-
-const getDeviceType = () => {
-  const width = window.innerWidth
-
-  if (width <= 767) {
-    return deviceType.mobile // 手機尺寸
-  } else if (width >= 768 && width <= 1024) {
-    return deviceType.tablet // 平板尺寸
-  } else {
-    return deviceType.desktop // 桌機尺寸
-  }
-}
-
-const setDivSizeToImage = (imageUrl) => {
-  const div = document.getElementsByClassName('banner')
-
-  const img = new Image()
-
-  img.onload = function () {
-    const element = div[0]
-    element.style.backgroundImage = `url('${imageUrl}')`
-  }
-
-  // 加載圖片
-  img.src = imageUrl
-}
-
 const mouseenter = (e, socialMedia) => {
   e.target.src = socialMedia.hoverUrl
 }
@@ -103,20 +66,6 @@ const mouseleave = (e, socialMedia) => {
 }
 
 onMounted(async () => {
-  switch (getDeviceType()) {
-    case deviceType.mobile:
-      objectProperty = 'isMobileSize'
-      break
-    case deviceType.tablet:
-      objectProperty = 'isTabletSize'
-
-      break
-    case deviceType.desktop:
-      objectProperty = 'isDesktopSize'
-      isNavbarShow.value = true
-      break
-  }
-
   products.value = await getProductsAsync({
     isInBanner: true,
     isNewProduct: true,
@@ -134,65 +83,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="banner">
-    <header>
-      <div class="header-container">
-        <div class="logo-container">
-          <div
-            class="hamburger"
-            v-if="getDeviceType() !== deviceType.desktop"
-            @click="() => (isNavbarShow = !isNavbarShow)"
-          ></div>
-          <img class="logo" src="/images/logo.svg" alt="" />
-        </div>
-        <div class="navbar" v-if="isNavbarShow">
-          <template v-if="getDeviceType() === deviceType.desktop">
-            <span class="sub-title-manrope-bold white">HOME</span>
-            <span
-              class="sub-title-manrope-bold white"
-              v-for="productCategory in productCategoryInHomepage"
-              :key="productCategory.id"
-              >{{ productCategory.name }}</span
-            >
-          </template>
-          <template v-else>
-            <div>
-              <div class="product-category-group" v-if="productCategoryInHomepage">
-                <div
-                  class="product-category"
-                  v-for="productCategory in productCategoryInHomepage"
-                  :key="productCategory.id"
-                >
-                  <img
-                    :src="productCategory.image.url"
-                    alt=""
-                    srcset=""
-                    v-if="productCategory.image"
-                  />
-                  <div class="product-categoey-content">
-                    <span class="product-categoey-name white">{{ productCategory.name }}</span>
-                    <div class="product-categoey-shop">
-                      <span>SHOP</span>
-                      <img src="/images/icon-arrow-right.svg" alt="" srcset="" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </template>
-        </div>
-        <img src="/images/icon-cart.svg" alt="" class="cart" />
-      </div>
-      <div class="content-container" v-if="productInBanner">
-        <div class="content">
-          <span class="new-product-text" v-if="productInBanner.isNewProduct">NEW PRODUCT</span>
-          <span class="h1-manrope-bold white">{{ productInBanner.name }}</span>
-          <span class="content-description">{{ productInBanner.description }}</span>
-        </div>
-        <button class="button-1-default">SEE PRODUCT</button>
-      </div>
-    </header>
-  </div>
+  <NavbarComponent :product-categories="productCategoryInHomepage" :product="productInBanner" />
   <main>
     <div class="product-category-group" v-if="productCategoryInHomepage">
       <div
