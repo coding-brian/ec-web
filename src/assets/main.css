@@ -14,15 +14,20 @@ body {
 }
 
 main {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr;
   align-items: center;
+  max-width: 1110px;
   padding-top: 120px;
   padding-bottom: 200px;
-  max-width: 1110px;
+}
+
+.main-content {
+  grid-area: main-content;
 }
 
 .product-category-group {
+  grid-area: product-category-group;
   display: flex;
   gap: 30px;
 }
@@ -252,6 +257,7 @@ main {
 
   .product-category-group {
     flex-direction: column;
+    align-items: center;
     gap: 16px;
   }
 

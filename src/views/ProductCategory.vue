@@ -1,5 +1,4 @@
 <script setup>
-import NavbarComponent from '@/components/NavbarComponent.vue'
 import { useRoute } from 'vue-router'
 import { getProductCategoryAsync } from '@/api/ecapi'
 import { onMounted, ref } from 'vue'
@@ -16,7 +15,6 @@ onMounted(async () => {
 </script>
 
 <template>
-  <NavbarComponent />
   <ul v-if="productCategory">
     <li v-for="product in productCategory.products" :key="product.id">
       <img
@@ -46,7 +44,6 @@ ul {
   flex-direction: column;
   gap: 160px;
   max-width: 1110px;
-  padding-top: 160px;
   padding-bottom: 160px;
 }
 
@@ -82,7 +79,6 @@ li img {
 @media screen and (max-width: 1024px) {
   ul {
     max-width: 689px;
-    padding-top: 120px;
     padding-bottom: 120px;
     gap: 120px;
     text-align: center;
@@ -109,10 +105,18 @@ li img {
 @media screen and (max-width: 767px) {
   ul {
     max-width: 327px;
-    padding-top: 64px;
     padding-bottom: 64px;
     gap: 120px;
     text-align: center;
   }
+}
+</style>
+
+<style>
+main {
+  grid-template-areas:
+    'main-content'
+    'product-category-group'
+    'news';
 }
 </style>

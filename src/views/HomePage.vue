@@ -5,10 +5,9 @@ import NavbarComponent from '@/components/NavbarComponent.vue'
 import { useDeviceSize } from '@/composables/deviceSize'
 import { useProductCategory } from '@/stores/productCategory'
 import { storeToRefs } from 'pinia'
-import { useProduct } from '@/stores/product'
+import { RouterView } from 'vue-router'
 
 const { productCategories } = storeToRefs(useProductCategory())
-const { products } = storeToRefs(useProduct())
 
 const news = ref()
 const { objectProperty } = useDeviceSize()
@@ -27,16 +26,6 @@ const socialMedias = ref([
     hoverUrl: '/images/icon-instagram-peru.svg',
   },
 ])
-
-const productInHomepage = computed(() => {
-  if (!products.value || products.value.length === 0) return null
-
-  const result = products.value
-    .filter((product) => product.isInHomepage && product.isInMainSection)
-    .sort((a, b) => a.priority - b.priority)
-
-  return result
-})
 
 const productCategoryInHomepage = computed(() => {
   if (!productCategories.value || productCategories.value.length <= 0) return null
@@ -92,48 +81,7 @@ onMounted(async () => {
         </div>
       </div>
     </div>
-    <div class="product-group" v-if="productInHomepage">
-      <div class="product">
-        <div>
-          <img
-            :src="productInHomepage[0].images.filter((item) => item[objectProperty])[0].url"
-            alt=""
-            srcset=""
-          />
-          <div class="product-content">
-            <span class="product-content-name h1-manrope-bold white">{{
-              productInHomepage[0].name
-            }}</span>
-            <span class="product-content-description body-manrope-medium white">{{
-              productInHomepage[0].description
-            }}</span>
-            <button class="button-2-default">SEE PRODUCT</button>
-          </div>
-        </div>
-      </div>
-      <div class="product">
-        <img
-          :src="productInHomepage[1].images.filter((item) => item[objectProperty])[0].url"
-          alt=""
-          srcset=""
-        />
-        <div class="product-content">
-          <span>{{ productInHomepage[1].name }}</span>
-          <button class="button-2-default">SEE PRODUCT</button>
-        </div>
-      </div>
-      <div class="product">
-        <img
-          :src="productInHomepage[2].images.filter((item) => item[objectProperty])[0].url"
-          alt=""
-          srcset=""
-        />
-        <div class="product-content">
-          <span>{{ productInHomepage[2].name }}</span>
-          <button class="button-2-default">SEE PRODUCT</button>
-        </div>
-      </div>
-    </div>
+    <RouterView class="main-content" />
     <div class="news" v-for="item in news" :key="item.id">
       <div class="news-container">
         <div class="news-title h2-manrope-bold">{{ item.title }}</div>

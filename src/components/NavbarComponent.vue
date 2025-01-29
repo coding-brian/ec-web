@@ -43,6 +43,10 @@ const setDivSizeToImage = (imageUrl) => {
   img.src = imageUrl
 }
 
+const getImage = (images) => {
+  return images.filter((item) => item.isInBanner && item[objectProperty])[0]
+}
+
 onMounted(async () => {
   products.value = await getProductsAsync({
     isInBanner: true,
@@ -92,10 +96,10 @@ onMounted(async () => {
                   @click="router.push({ path: `/productCategory/${productCategory.id}` })"
                 >
                   <img
-                    :src="productCategory.image.url"
+                    :src="getImage(productCategory.images).url"
                     alt=""
                     srcset=""
-                    v-if="productCategory.image"
+                    v-if="productCategory.images && productCategory.images.length > 0"
                   />
                   <div class="product-categoey-content">
                     <span class="product-categoey-name white">{{ productCategory.name }}</span>

@@ -11,6 +11,14 @@ const router = createRouter({
         requireAuth: false,
       },
       component: () => import('../views/HomePage.vue'),
+      children: [
+        { name: '', path: '', component: () => import('@/views/ProductGroupPage.vue') },
+        {
+          name: 'productCategory',
+          path: 'productCategory/:id',
+          component: () => import('@/views/ProductCategory.vue'),
+        },
+      ],
     },
     {
       path: '/register',
@@ -34,11 +42,6 @@ const router = createRouter({
 
         return true
       },
-    },
-    {
-      path: '/productCategory/:id',
-      name: 'productCategory',
-      component: () => import('@/views/ProductCategory.vue'),
     },
   ],
 })
