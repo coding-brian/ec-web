@@ -7,6 +7,10 @@ import { storeToRefs } from 'pinia'
 import { useProductCategory } from '@/stores/productCategory'
 import { useProduct } from '@/stores/product'
 import { getProductCategoriesAsync, getProductsAsync } from '@/api/ecapi'
+import { useRouter } from 'vue-router'
+import NewProductComponet from '@/components/NewProductComponet.vue'
+
+const router = useRouter()
 
 const { getDeviceType } = useDeviceType()
 const { objectProperty } = useDeviceSize()
@@ -67,11 +71,14 @@ onMounted(async () => {
         </div>
         <div class="navbar" v-if="isNavbarShow">
           <template v-if="getDeviceType() === deviceType.desktop">
-            <span class="sub-title-manrope-bold white">HOME</span>
+            <span class="sub-title-manrope-bold white" @click="router.push({ path: '/' })"
+              >HOME</span
+            >
             <span
               class="sub-title-manrope-bold white"
               v-for="productCategory in productCategories"
               :key="productCategory.id"
+              @click="router.push({ path: `/productCategory/${productCategory.id}` })"
               >{{ productCategory.name }}</span
             >
           </template>
@@ -82,6 +89,7 @@ onMounted(async () => {
                   class="product-category"
                   v-for="productCategory in productCategories"
                   :key="productCategory.id"
+                  @click="router.push({ path: `/productCategory/${productCategory.id}` })"
                 >
                   <img
                     :src="productCategory.image.url"
@@ -105,7 +113,7 @@ onMounted(async () => {
       </div>
       <div class="content-container" v-if="productInBanner">
         <div class="content">
-          <span class="new-product-text" v-if="productInBanner.isNewProduct">NEW PRODUCT</span>
+          <NewProductComponet class="white" v-if="productInBanner.isNewProduct" />
           <span class="h1-manrope-bold white">{{ productInBanner.name }}</span>
           <span class="content-description">{{ productInBanner.description }}</span>
         </div>
