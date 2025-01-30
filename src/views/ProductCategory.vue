@@ -1,13 +1,15 @@
 <script setup>
 import { useRoute } from 'vue-router'
 import { getProductCategoryAsync } from '@/api/ecapi'
-import { onMounted, ref } from 'vue'
+import { onMounted } from 'vue'
 import NewProductComponet from '@/components/NewProductComponet.vue'
 import { useDeviceSize } from '@/composables/deviceSize'
+import { storeToRefs } from 'pinia'
+import { useProductCategory } from '@/stores/productCategory'
 
 const route = useRoute()
-const productCategory = ref(null)
 const { objectProperty } = useDeviceSize()
+const { productCategory } = storeToRefs(useProductCategory())
 
 onMounted(async () => {
   productCategory.value = await getProductCategoryAsync(route.params.id)

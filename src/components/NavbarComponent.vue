@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref, computed } from 'vue'
+import { onMounted, ref, computed, watch } from 'vue'
 import { useDeviceType } from '@/composables/deviceType'
 import deviceType from '@/const/deviceType.json'
 import { useDeviceSize } from '@/composables/deviceSize'
@@ -7,14 +7,15 @@ import { storeToRefs } from 'pinia'
 import { useProductCategory } from '@/stores/productCategory'
 import { useProduct } from '@/stores/product'
 import { getProductCategoriesAsync, getProductsAsync } from '@/api/ecapi'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import NewProductComponet from '@/components/NewProductComponet.vue'
 
 const router = useRouter()
+const route = useRoute()
 
 const { getDeviceType } = useDeviceType()
 const { objectProperty } = useDeviceSize()
-const { productCategories } = storeToRefs(useProductCategory())
+const { productCategories, productCategory } = storeToRefs(useProductCategory())
 const { products } = storeToRefs(useProduct())
 
 const isNavbarShow = ref(false)
@@ -51,9 +52,19 @@ onMounted(async () => {
     isInHomepage: true,
     operator: 0,
   })
-
   productCategories.value = await getProductCategoriesAsync()
 })
+
+watch(
+  () => route.name,
+  () => {
+    if (productInBanner.value && route.name === 'home') {
+      setDivSizeToImage(
+        productInBanner.value.images.filter((item) => item.isBanner && item[objectProperty])[0].url,
+      )
+    }
+  },
+)
 </script>
 
 <template>
@@ -69,7 +80,11 @@ onMounted(async () => {
           <img class="logo" src="/images/logo.svg" alt="" />
         </li>
         <template v-if="getDeviceType() === deviceType.desktop">
-          <li><span class="sub-title-manrope-bold white">HOME</span></li>
+          <li>
+            <span class="sub-title-manrope-bold white" @click="router.push({ path: '/' })"
+              >HOME</span
+            >
+          </li>
           <li
             v-for="productCategory in productCategories"
             :key="productCategory.id"
@@ -110,7 +125,7 @@ onMounted(async () => {
       </ul>
     </nav>
   </header>
-  <div class="banner">
+  <div class="banner" v-if="route.name === 'home'">
     <div class="content-container" v-if="productInBanner">
       <div class="content">
         <NewProductComponet class="white" v-if="productInBanner.isNewProduct" />
@@ -120,9 +135,21 @@ onMounted(async () => {
       <button class="button-1-default">SEE PRODUCT</button>
     </div>
   </div>
+  <div v-if="route.name === 'productCategory' && productCategory" class="product-category-header">
+    <span class="h2-manrope-bold white">{{ productCategory.name }}</span>
+  </div>
 </template>
 
 <style scoped>
+.product-category-header {
+  background-color: black;
+  width: 100%;
+  height: 239px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .banner {
   background-position: center;
   background-repeat: no-repeat;
