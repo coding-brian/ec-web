@@ -13,6 +13,7 @@ const productInHomepage = computed(() => {
   const result = products.value
     .filter((product) => product.isInHomepage && product.isInMainSection)
     .sort((a, b) => a.priority - b.priority)
+  console.log(result)
 
   return result
 })
