@@ -15,6 +15,8 @@ export const getNewsAsync = async () => await request.get('/news')
 
 export const getProductsAsync = async (params) => await request.get('/products', { params })
 
+export const getProductAsync = async (id) => await request.get(`/products/${id}`)
+
 export const getStoreAsync = async () => await request.get('/store')
 
 export const getProductCategoriesAsync = async () => await request.get('/productCategories')

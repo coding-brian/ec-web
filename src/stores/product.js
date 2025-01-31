@@ -3,5 +3,6 @@ import { ref } from 'vue'
 
 export const useProduct = defineStore('product', () => {
   const products = ref(null)
-  return { products }
+  const product = ref(null)
+  return { products, product }
 })

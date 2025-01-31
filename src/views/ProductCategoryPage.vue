@@ -1,19 +1,31 @@
 <script setup>
-import { useRoute } from 'vue-router'
+import { useRoute, onBeforeRouteLeave } from 'vue-router'
 import { getProductCategoryAsync } from '@/api/ecapi'
-import { onMounted } from 'vue'
+import { onMounted, watch } from 'vue'
 import NewProductComponet from '@/components/NewProductComponet.vue'
 import { useDeviceSize } from '@/composables/deviceSize'
 import { storeToRefs } from 'pinia'
 import { useProductCategory } from '@/stores/productCategory'
+import ProductButton from '@/components/ProductButton.vue'
 
 const route = useRoute()
 const { objectProperty } = useDeviceSize()
 const { productCategory } = storeToRefs(useProductCategory())
 
+onBeforeRouteLeave(() => {
+  productCategory.value = null
+})
+
 onMounted(async () => {
   productCategory.value = await getProductCategoryAsync(route.params.id)
 })
+
+watch(
+  () => route.params.id,
+  async (newId) => {
+    productCategory.value = await getProductCategoryAsync(newId)
+  },
+)
 </script>
 
 <template>
@@ -27,7 +39,7 @@ onMounted(async () => {
         <NewProductComponet class="peru" v-if="product.isNewProduct" />
         <span class="h2-manrope-bold black">{{ product.name }}</span>
         <span class="body-manrope-medium black">{{ product.description }}</span>
-        <button class="button-1-default">SEE PPRODUCT</button>
+        <ProductButton class="button-1-default" :id="product.id"></ProductButton>
       </div>
     </li>
   </ul>

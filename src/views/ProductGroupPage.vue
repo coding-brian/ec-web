@@ -3,6 +3,7 @@ import { storeToRefs } from 'pinia'
 import { useProduct } from '@/stores/product'
 import { computed } from 'vue'
 import { useDeviceSize } from '@/composables/deviceSize'
+import ProductButton from '@/components/ProductButton.vue'
 
 const { products } = storeToRefs(useProduct())
 const { objectProperty } = useDeviceSize()
@@ -34,7 +35,7 @@ const productInHomepage = computed(() => {
           <span class="product-content-description body-manrope-medium white">{{
             productInHomepage[0].description
           }}</span>
-          <button class="button-2-default">SEE PRODUCT</button>
+          <ProductButton class="button-2-default" :id="productInHomepage[0].id"></ProductButton>
         </div>
       </div>
     </div>
@@ -46,7 +47,7 @@ const productInHomepage = computed(() => {
       />
       <div class="product-content">
         <span>{{ productInHomepage[1].name }}</span>
-        <button class="button-2-default">SEE PRODUCT</button>
+        <ProductButton class="button-2-default" :id="productInHomepage[1].id"></ProductButton>
       </div>
     </div>
     <div class="product">
@@ -57,7 +58,7 @@ const productInHomepage = computed(() => {
       />
       <div class="product-content">
         <span>{{ productInHomepage[2].name }}</span>
-        <button class="button-2-default">SEE PRODUCT</button>
+        <ProductButton class="button-2-default" :id="productInHomepage[2].id"></ProductButton>
       </div>
     </div>
   </div>
