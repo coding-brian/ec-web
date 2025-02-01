@@ -189,7 +189,7 @@ main {
 /* Tablet */
 @media screen and (max-width: 1024px) {
   main {
-    width: 689px;
+    max-width: 689px;
     padding-top: 96px;
     padding-bottom: 96px;
   }

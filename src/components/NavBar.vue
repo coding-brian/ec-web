@@ -8,7 +8,7 @@ import { useProductCategory } from '@/stores/productCategory'
 import { useProduct } from '@/stores/product'
 import { getProductCategoriesAsync, getProductsAsync } from '@/api/ecapi'
 import { useRouter, useRoute } from 'vue-router'
-import NewProductComponet from '@/components/NewProductComponet.vue'
+import NewProductComponet from '@/components/NewProduct.vue'
 
 const router = useRouter()
 const route = useRoute()
@@ -111,7 +111,12 @@ watch(
                   />
                   <div class="product-categoey-content">
                     <span class="product-categoey-name white">{{ productCategory.name }}</span>
-                    <div class="product-categoey-shop">
+                    <div
+                      class="product-categoey-shop"
+                      @click="
+                        router.push({ name: 'productCategory', params: { id: productCategory.id } })
+                      "
+                    >
                       <span>SHOP</span>
                       <img src="/images/icon-arrow-right.svg" alt="" srcset="" />
                     </div>

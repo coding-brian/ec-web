@@ -14,14 +14,14 @@ const router = createRouter({
       children: [
         { name: 'home', path: '', component: () => import('@/views/ProductGroupPage.vue') },
         {
-          name: 'productCategory',
-          path: 'productCategory/:id',
-          component: () => import('@/views/ProductCategoryPage.vue'),
-        },
-        {
           name: 'product',
           path: 'product/:id',
           component: () => import('@/views/ProductPage.vue'),
+        },
+        {
+          name: 'productCategory',
+          path: 'productCategory/:id',
+          component: () => import('@/views/ProductCategoryPage.vue'),
         },
       ],
     },

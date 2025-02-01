@@ -2,11 +2,10 @@
 import { useRoute, onBeforeRouteLeave } from 'vue-router'
 import { getProductCategoryAsync } from '@/api/ecapi'
 import { onMounted, watch } from 'vue'
-import NewProductComponet from '@/components/NewProductComponet.vue'
 import { useDeviceSize } from '@/composables/deviceSize'
 import { storeToRefs } from 'pinia'
 import { useProductCategory } from '@/stores/productCategory'
-import ProductButton from '@/components/ProductButton.vue'
+import ProductContent from '@/components/ProductContent.vue'
 
 const route = useRoute()
 const { objectProperty } = useDeviceSize()
@@ -35,12 +34,7 @@ watch(
         :src="product.images.filter((item) => !item.isBanner && item[objectProperty])[0].url"
         alt=""
       />
-      <div class="product-content">
-        <NewProductComponet class="peru" v-if="product.isNewProduct" />
-        <span class="h2-manrope-bold black">{{ product.name }}</span>
-        <span class="body-manrope-medium black">{{ product.description }}</span>
-        <ProductButton class="button-1-default" :id="product.id"></ProductButton>
-      </div>
+      <ProductContent :product="product" />
     </li>
   </ul>
 </template>
@@ -65,6 +59,7 @@ li {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 125px;
+  align-items: center;
 }
 
 li:nth-child(2) {
@@ -81,12 +76,6 @@ li:nth-child(2) .product-content {
 
 li img {
   max-width: 100%;
-}
-
-.product-content {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
 }
 
 /* Tablet */
@@ -108,10 +97,6 @@ li img {
     grid-template-areas:
       'img'
       'content';
-  }
-
-  .product-content {
-    align-items: center;
   }
 }
 

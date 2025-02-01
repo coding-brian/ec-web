@@ -1,12 +1,14 @@
 <script setup>
 import { getNewsAsync } from '@/api/ecapi'
 import { computed, onMounted, ref } from 'vue'
-import NavbarComponent from '@/components/NavbarComponent.vue'
+import NavBar from '@/components/NavBar.vue'
 import { useDeviceSize } from '@/composables/deviceSize'
 import { useProductCategory } from '@/stores/productCategory'
 import { storeToRefs } from 'pinia'
 import { RouterView } from 'vue-router'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const { productCategories } = storeToRefs(useProductCategory())
 
 const news = ref()
@@ -63,7 +65,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <NavbarComponent />
+  <NavBar />
   <main>
     <div class="product-category-group" v-if="productCategoryInHomepage">
       <div
@@ -74,7 +76,10 @@ onMounted(async () => {
         <img :src="productCategory.image.url" alt="" srcset="" v-if="productCategory.image" />
         <div class="product-categoey-content">
           <span class="product-categoey-name black">{{ productCategory.name }}</span>
-          <div class="product-categoey-shop">
+          <div
+            class="product-categoey-shop"
+            @click="router.push({ name: 'productCategory', params: { id: productCategory.id } })"
+          >
             <span>SHOP</span>
             <img src="/images/icon-arrow-right.svg" alt="" srcset="" />
           </div>

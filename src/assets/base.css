@@ -24,6 +24,14 @@
   color: var(--peru);
 }
 
+.opacity-50 {
+  opacity: 50%;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
 .h1-manrope-bold {
   font-size: 3.5rem;
   line-height: 3.625rem;
