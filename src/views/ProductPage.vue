@@ -86,7 +86,7 @@ watch(
             v-if="relation.images && relation.images.length > 0"
           />
           <span class="h5-manrope-bold">{{ relation.name }}</span>
-          <ProductButton class="button-1-default"></ProductButton>
+          <ProductButton class="button-1-default" :id="relation.itemId"></ProductButton>
         </div>
       </div>
     </div>
@@ -268,8 +268,6 @@ img {
 @media screen and (max-width: 767px) {
   .gallery {
     display: grid;
-    /* grid-template-columns: 1fr; */
-    /* grid-template-rows: 1fr 1fr 1fr; */
     column-gap: 0px;
     row-gap: 20px;
     grid-template-areas:
