@@ -6,6 +6,7 @@ import { getProductAsync } from '@/api/ecapi'
 import { useRoute, useRouter, onBeforeRouteLeave } from 'vue-router'
 import ProductContent from '@/components/ProductContent.vue'
 import { useDeviceSize } from '@/composables/deviceSize'
+import ProductButton from '@/components/ProductButton.vue'
 
 const { product } = storeToRefs(useProduct())
 const route = useRoute()
@@ -75,12 +76,18 @@ watch(
     <div class="gallery">
       <img v-for="gallery in productGalleries" :src="gallery.url" alt="" :key="gallery.id" />
     </div>
-    <div class="relative">
-      <span>YOU MAY ALSO LIKE</span>
-      <div>
-        <div>1</div>
-        <div>2</div>
-        <div>3</div>
+    <div class="relation">
+      <span class="h3-manrope-bold">YOU MAY ALSO LIKE</span>
+      <div class="product-relation">
+        <div v-for="relation in product.relations" :key="relation.id">
+          <img
+            :src="relation.images.filter((item) => item[objectProperty])[0].url"
+            alt=""
+            v-if="relation.images && relation.images.length > 0"
+          />
+          <span class="h5-manrope-bold">{{ relation.name }}</span>
+          <ProductButton class="button-1-default"></ProductButton>
+        </div>
       </div>
     </div>
   </div>
@@ -164,6 +171,35 @@ img {
   grid-area: img3;
 }
 
+.relation {
+  display: flex;
+  flex-direction: column;
+  gap: 64px;
+  padding-bottom: 160px;
+}
+
+.relation span {
+  text-align: center;
+}
+
+.product-relation {
+  display: flex;
+  justify-content: space-between;
+}
+
+.product-relation img {
+  max-width: 350px;
+  max-height: 318px;
+}
+
+.product-relation div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 32px;
+}
+
 /* Tablet */
 @media screen and (max-width: 1024px) {
   .container .product-container img {
@@ -216,10 +252,51 @@ img {
     justify-content: space-between;
     gap: 0;
   }
+
+  .relation {
+    gap: 56px;
+    padding-bottom: 120px;
+  }
+
+  .product-relation img {
+    max-width: 223px;
+    max-height: 318px;
+  }
 }
 
 /* Mobile */
 @media screen and (max-width: 767px) {
+  .gallery {
+    display: grid;
+    /* grid-template-columns: 1fr; */
+    /* grid-template-rows: 1fr 1fr 1fr; */
+    column-gap: 0px;
+    row-gap: 20px;
+    grid-template-areas:
+      'img1'
+      'img3'
+      'img2';
+  }
+
+  .gallery img:first-child,
+  .gallery img:nth-child(3) {
+    max-width: 327px;
+    max-height: 174px;
+  }
+
+  .gallery img:nth-child(2) {
+    max-width: 327px;
+    max-height: 368px;
+  }
+
+  .relation {
+    gap: 40px;
+  }
+  .product-relation {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
 }
 </style>
 
