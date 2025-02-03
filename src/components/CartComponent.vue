@@ -14,18 +14,12 @@ const total = computed(() => {
   return result
 })
 
-const add = (product) => {
-  const count = product.count + 1
-  store.addToCart(product, count)
-}
+const add = (product) => product.count++
 
 const minus = (product) => {
-  const count = product.count - 1
-
-  if (count === 0) {
+  product.count--
+  if (product.count === 0) {
     store.removeProduct(product)
-  } else {
-    store.addToCart(product, count)
   }
 }
 
@@ -157,8 +151,8 @@ li img {
   justify-content: space-between;
   background-color: var(--anti-flash-white);
   height: 32px;
-  padding-left: 16px;
-  padding-right: 16px;
+  padding-left: 10px;
+  padding-right: 10px;
   width: 96px;
 }
 
@@ -173,6 +167,10 @@ li img {
 .quantity-selector span {
   font-size: 16px;
   font-weight: bold;
-  margin: 0 10px;
+}
+
+.quantity-selector button:hover {
+  color: var(--peru);
+  opacity: 100%;
 }
 </style>
