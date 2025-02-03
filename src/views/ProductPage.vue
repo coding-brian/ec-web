@@ -1,5 +1,5 @@
 <script setup>
-import { useProduct } from '@/stores/product'
+import { useProductStore } from '@/stores/product'
 import { storeToRefs } from 'pinia'
 import { computed, onMounted, watch } from 'vue'
 import { getProductAsync } from '@/api/ecapi'
@@ -9,7 +9,7 @@ import { useDeviceSize } from '@/composables/deviceSize'
 import ProductButton from '@/components/ProductButton.vue'
 import CountButton from '@/components/CountButton.vue'
 
-const { product } = storeToRefs(useProduct())
+const { product } = storeToRefs(useProductStore())
 const route = useRoute()
 const router = useRouter()
 const { objectProperty } = useDeviceSize()
@@ -54,7 +54,7 @@ watch(
         <img :src="proudctImages[0].url" alt="" />
         <ProductContent :product="product">
           <span class="h6-manrope-bold black">$ {{ product.price.salePrice }}</span>
-          <CountButton></CountButton>
+          <CountButton :product="product"></CountButton>
         </ProductContent>
       </div>
     </div>

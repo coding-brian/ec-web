@@ -4,21 +4,24 @@ import { useDeviceType } from '@/composables/deviceType'
 import deviceType from '@/const/deviceType.json'
 import { useDeviceSize } from '@/composables/deviceSize'
 import { storeToRefs } from 'pinia'
-import { useProductCategory } from '@/stores/productCategory'
-import { useProduct } from '@/stores/product'
+import { useProductCategoryStore } from '@/stores/productCategory'
+import { useProductStore } from '@/stores/product'
 import { getProductCategoriesAsync, getProductsAsync } from '@/api/ecapi'
 import { useRouter, useRoute } from 'vue-router'
 import NewProductComponet from '@/components/NewProduct.vue'
+import MaskComponent from './MaskComponent.vue'
+import CartComponent from './CartComponent.vue'
 
 const router = useRouter()
 const route = useRoute()
 
 const { getDeviceType } = useDeviceType()
 const { objectProperty } = useDeviceSize()
-const { productCategories, productCategory } = storeToRefs(useProductCategory())
-const { products } = storeToRefs(useProduct())
+const { productCategories, productCategory } = storeToRefs(useProductCategoryStore())
+const { products } = storeToRefs(useProductStore())
 
 const isNavbarShow = ref(false)
+const isShowCart = ref(false)
 
 const productInBanner = computed(() => {
   if (!products.value || products.value.length === 0) return null
@@ -94,8 +97,8 @@ watch(
           </li>
         </template>
         <template v-else>
-          <div class="navbar" v-if="isNavbarShow">
-            <div>
+          <MaskComponent v-if="isNavbarShow">
+            <div class="navbar">
               <div class="product-category-group" v-if="productCategories">
                 <div
                   class="product-category"
@@ -124,9 +127,17 @@ watch(
                 </div>
               </div>
             </div>
-          </div>
+          </MaskComponent>
         </template>
-        <li><img src="/images/icon-cart.svg" alt="" class="cart" /></li>
+        <CartComponent v-if="isShowCart"></CartComponent>
+        <li>
+          <img
+            src="/images/icon-cart.svg"
+            alt=""
+            class="cart"
+            @click="() => (isShowCart = !isShowCart)"
+          />
+        </li>
       </ul>
     </nav>
   </header>
@@ -240,17 +251,6 @@ ul {
   ul li:first-child {
     display: flex;
     gap: 42px;
-  }
-
-  .navbar {
-    display: block;
-    position: absolute;
-    top: 94px;
-    left: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    height: 100%;
-    width: 100%;
-    z-index: 2;
   }
 
   .navbar > span:first-child {

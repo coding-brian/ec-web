@@ -4,12 +4,12 @@ import { getProductCategoryAsync } from '@/api/ecapi'
 import { onMounted, watch } from 'vue'
 import { useDeviceSize } from '@/composables/deviceSize'
 import { storeToRefs } from 'pinia'
-import { useProductCategory } from '@/stores/productCategory'
+import { useProductCategoryStore } from '@/stores/productCategory'
 import ProductContent from '@/components/ProductContent.vue'
 
 const route = useRoute()
 const { objectProperty } = useDeviceSize()
-const { productCategory } = storeToRefs(useProductCategory())
+const { productCategory } = storeToRefs(useProductCategoryStore())
 
 onBeforeRouteLeave(() => {
   productCategory.value = null

@@ -3,13 +3,13 @@ import { getNewsAsync } from '@/api/ecapi'
 import { computed, onMounted, ref } from 'vue'
 import NavBar from '@/components/NavBar.vue'
 import { useDeviceSize } from '@/composables/deviceSize'
-import { useProductCategory } from '@/stores/productCategory'
+import { useProductCategoryStore } from '@/stores/productCategory'
 import { storeToRefs } from 'pinia'
 import { RouterView } from 'vue-router'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
-const { productCategories } = storeToRefs(useProductCategory())
+const { productCategories } = storeToRefs(useProductCategoryStore())
 
 const news = ref()
 const { objectProperty } = useDeviceSize()

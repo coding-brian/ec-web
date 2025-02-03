@@ -1,11 +1,11 @@
 <script setup>
 import { storeToRefs } from 'pinia'
-import { useProduct } from '@/stores/product'
+import { useProductStore } from '@/stores/product'
 import { computed } from 'vue'
 import { useDeviceSize } from '@/composables/deviceSize'
 import ProductButton from '@/components/ProductButton.vue'
 
-const { products } = storeToRefs(useProduct())
+const { products } = storeToRefs(useProductStore())
 const { objectProperty } = useDeviceSize()
 
 const productInHomepage = computed(() => {
