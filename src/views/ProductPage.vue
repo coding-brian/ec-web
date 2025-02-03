@@ -7,6 +7,7 @@ import { useRoute, useRouter, onBeforeRouteLeave } from 'vue-router'
 import ProductContent from '@/components/ProductContent.vue'
 import { useDeviceSize } from '@/composables/deviceSize'
 import ProductButton from '@/components/ProductButton.vue'
+import CountButton from '@/components/CountButton.vue'
 
 const { product } = storeToRefs(useProduct())
 const route = useRoute()
@@ -53,6 +54,7 @@ watch(
         <img :src="proudctImages[0].url" alt="" />
         <ProductContent :product="product">
           <span class="h6-manrope-bold black">$ {{ product.price.salePrice }}</span>
+          <CountButton></CountButton>
         </ProductContent>
       </div>
     </div>
@@ -266,6 +268,16 @@ img {
 
 /* Mobile */
 @media screen and (max-width: 767px) {
+  .product-container {
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .container .product-container img {
+    max-width: 327px;
+    max-height: 327px;
+  }
+
   .gallery {
     display: grid;
     column-gap: 0px;
@@ -287,9 +299,17 @@ img {
     max-height: 368px;
   }
 
+  .in-the-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
   .relation {
     gap: 40px;
   }
+
   .product-relation {
     display: flex;
     flex-direction: column;
