@@ -16,13 +16,11 @@ const total = computed(() => {
 
 const add = (product) => {
   const count = product.count + 1
-  console.log('add', count)
   store.addToCart(product, count)
 }
 
 const minus = (product) => {
   const count = product.count - 1
-  console.log('minus', count)
 
   if (count === 0) {
     store.removeProduct(product)
