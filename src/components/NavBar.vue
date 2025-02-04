@@ -129,7 +129,7 @@ watch(
             </div>
           </MaskComponent>
         </template>
-        <CartComponent v-if="isShowCart"></CartComponent>
+        <CartComponent v-model:is-show="isShowCart"></CartComponent>
         <li>
           <img
             src="/images/icon-cart.svg"

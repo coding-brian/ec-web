@@ -3,10 +3,12 @@ import { useCartStore } from '@/stores/cart'
 import { computed } from 'vue'
 import MaskComponent from './MaskComponent.vue'
 
+const props = defineProps({ isShow: { type: Boolean, default: false } })
+const emit = defineEmits(['update:isShow'])
+
 const store = useCartStore()
 const total = computed(() => {
   let result = 0
-
   store.cart.products.forEach((product) => {
     result += product.price.salePrice * product.count
   })
@@ -26,12 +28,16 @@ const minus = (product) => {
 const removeAll = () => {
   store.removeAllProduct()
 }
+
+const close = () => {
+  emit('update:isShow', false)
+}
 </script>
 
 <template>
-  <MaskComponent>
+  <MaskComponent @click.stop="close" v-if="props.isShow">
     <div class="cart-conatiner">
-      <div class="cart">
+      <div class="cart" @click.stop>
         <div>
           <span class="h6-manrope-bold">CART ({{ store.cart.products.length }})</span>
           <span class="opacity-50 body-manrope-medium" @click="removeAll">Remove all</span>
@@ -87,6 +93,11 @@ li {
   margin: 0;
   padding: 0;
   list-style: none; /* 移除項目符號 */
+}
+
+ul {
+  display: flex;
+  flex-direction: column;
   gap: 24px;
 }
 
@@ -172,5 +183,30 @@ li img {
 .quantity-selector button:hover {
   color: var(--peru);
   opacity: 100%;
+}
+
+/* Tablet */
+@media screen and (max-width: 1024px) {
+  .cart-conatiner {
+    width: 689px;
+  }
+}
+
+/* Mobile */
+@media screen and (max-width: 767px) {
+  .cart-conatiner {
+    width: 327px;
+    display: flex;
+    align-items: center;
+  }
+
+  .cart {
+    width: 100%;
+  }
+
+  li > div:first-child > div {
+    word-wrap: break-word;
+    max-width: 76px;
+  }
 }
 </style>

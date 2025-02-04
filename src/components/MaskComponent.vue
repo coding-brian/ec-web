@@ -8,7 +8,7 @@
 .mask {
   display: block;
   position: absolute;
-  top: 99px;
+  top: 94px;
   left: 0;
   background-color: rgba(0, 0, 0, 0.5);
   height: 100%;
