@@ -3,7 +3,7 @@ import { storeToRefs } from 'pinia'
 import { useProductStore } from '@/stores/product'
 import { computed } from 'vue'
 import { useDeviceSize } from '@/composables/deviceSize'
-import ProductButton from '@/components/ProductButton.vue'
+import ProductButton from '@/components/Button/ProductButton.vue'
 
 const { products } = storeToRefs(useProductStore())
 const { objectProperty } = useDeviceSize()

@@ -6,8 +6,8 @@ import { getProductAsync } from '@/api/ecapi'
 import { useRoute, useRouter, onBeforeRouteLeave } from 'vue-router'
 import ProductContent from '@/components/ProductContent.vue'
 import { useDeviceSize } from '@/composables/deviceSize'
-import ProductButton from '@/components/ProductButton.vue'
-import CountButton from '@/components/CountButton.vue'
+import ProductButton from '@/components/Button/ProductButton.vue'
+import CountButton from '@/components/Button/CountButton.vue'
 
 const { product } = storeToRefs(useProductStore())
 const route = useRoute()

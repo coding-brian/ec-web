@@ -1,5 +1,5 @@
 <script setup>
-import ProductButton from '@/components/ProductButton.vue'
+import ProductButton from '@/components/Button/ProductButton.vue'
 import NewProductComponet from '@/components/NewProduct.vue'
 
 defineProps({ product: Object })
