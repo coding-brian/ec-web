@@ -25,6 +25,15 @@ const router = createRouter({
         },
       ],
     },
+    // TODO: 這裡要改成requireAuth: true
+    {
+      path: '/checkout',
+      name: 'checkout',
+      meta: {
+        requireAuth: false,
+      },
+      component: () => import('../views/CheckoutPage.vue'),
+    },
     {
       path: '/register',
       name: 'register',
