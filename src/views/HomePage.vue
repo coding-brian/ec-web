@@ -7,6 +7,7 @@ import { useProductCategoryStore } from '@/stores/productCategory'
 import { storeToRefs } from 'pinia'
 import { RouterView } from 'vue-router'
 import { useRouter } from 'vue-router'
+import FooterComponent from '@/components/FooterComponent.vue'
 
 const router = useRouter()
 const { productCategories } = storeToRefs(useProductCategoryStore())
@@ -95,36 +96,5 @@ onMounted(async () => {
       <img :src="image.url" alt="" v-for="image in item.images" :key="image.id" />
     </div>
   </main>
-  <footer>
-    <div class="footer-content">
-      <img src="/images/logo.svg" alt="" class="logo" />
-      <div class="navbar-footer white sub-title-manrope-bold">
-        <span>HOME</span>
-        <span>HEADPHONES</span>
-        <span>SPEAKS</span>
-        <span>EARPHONES</span>
-      </div>
-      <div class="description">
-        <span class="body-manrope-medium white"
-          >Audiophile is an all in one stop to fulfill your audio needs. We're a small team of music
-          lovers and sound specialists who are devoted to helping you get the most out of personal
-          audio. Come and visit our demo facility - we’re open 7 days a week.</span
-        >
-      </div>
-      <div class="social-media">
-        <img
-          v-for="socialMedia in socialMedias"
-          :key="socialMedia.url"
-          :src="socialMedia.url"
-          alt=""
-          srcset=""
-          @mouseenter="mouseenter($event, socialMedia)"
-          @mouseleave="mouseleave($event, socialMedia)"
-        />
-      </div>
-      <div class="copyright">
-        <span class="white body-manrope-medium">Copyright 2021. All Rights Reserved</span>
-      </div>
-    </div>
-  </footer>
+  <FooterComponent></FooterComponent>
 </template>
