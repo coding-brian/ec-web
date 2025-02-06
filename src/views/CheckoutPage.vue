@@ -19,114 +19,112 @@ onMounted(() => {
 <template>
   <NavBar></NavBar>
   <main>
+    <span class="body-manrope-medium opacity-50" @click="router.back()">Go Back</span>
     <div class="checkout-conatiner">
-      <span class="body-manrope-medium opacity-50" @click="router.back()">Go Back</span>
-      <div class="checkout-info">
-        <div class="checkout">
-          <span class="h3-manrope-bold">CHECKOUT</span>
-          <div class="form">
-            <div class="form-container">
-              <span class="sub-title-manrope-bold peru">Billing Details</span>
-              <div class="billing-detail">
-                <CustomInput class="name" :placeholder="'Alex'">
-                  <template v-slot:title> Name </template>
-                  <template v-slot:error-message> Wrong Format </template>
-                </CustomInput>
-                <CustomInput class="email-address" :placeholder="'Alex'">
-                  <template v-slot:title> Email Address </template>
-                  <template v-slot:error-message> Wrong Format </template>
-                </CustomInput>
-                <CustomInput class="phone-number" :placeholder="'Alex'">
-                  <template v-slot:title> Phone Number </template>
-                  <template v-slot:error-message> Wrong Format </template>
-                </CustomInput>
-              </div>
+      <div class="checkout">
+        <span class="h3-manrope-bold">CHECKOUT</span>
+        <div class="form">
+          <div class="form-container">
+            <span class="sub-title-manrope-bold peru">Billing Details</span>
+            <div class="billing-detail">
+              <CustomInput class="name" :placeholder="'Alex'">
+                <template v-slot:title> Name </template>
+                <template v-slot:error-message> Wrong Format </template>
+              </CustomInput>
+              <CustomInput class="email-address" :placeholder="'Alex'">
+                <template v-slot:title> Email Address </template>
+                <template v-slot:error-message> Wrong Format </template>
+              </CustomInput>
+              <CustomInput class="phone-number" :placeholder="'Alex'">
+                <template v-slot:title> Phone Number </template>
+                <template v-slot:error-message> Wrong Format </template>
+              </CustomInput>
             </div>
-            <div class="form-container">
-              <span class="sub-title-manrope-bold peru">SHIPPING-INFO</span>
-              <div class="shipping-info">
-                <CustomInput class="address" :placeholder="'Alex'">
-                  <template v-slot:title> Address </template>
-                  <template v-slot:error-message> Wrong Format </template>
-                </CustomInput>
-                <CustomInput class="zip-code" :placeholder="'Alex'">
-                  <template v-slot:title> ZIP Code </template>
-                  <template v-slot:error-message> Wrong Format </template>
-                </CustomInput>
-                <CustomInput class="city" :placeholder="'Alex'">
-                  <template v-slot:title> City </template>
-                  <template v-slot:error-message> Wrong Format </template>
-                </CustomInput>
-                <CustomInput class="country" :placeholder="'Alex'">
-                  <template v-slot:title> Countrty </template>
-                  <template v-slot:error-message> Wrong Format </template>
-                </CustomInput>
-              </div>
+          </div>
+          <div class="form-container">
+            <span class="sub-title-manrope-bold peru">SHIPPING-INFO</span>
+            <div class="shipping-info">
+              <CustomInput class="address" :placeholder="'Alex'">
+                <template v-slot:title> Address </template>
+                <template v-slot:error-message> Wrong Format </template>
+              </CustomInput>
+              <CustomInput class="zip-code" :placeholder="'Alex'">
+                <template v-slot:title> ZIP Code </template>
+                <template v-slot:error-message> Wrong Format </template>
+              </CustomInput>
+              <CustomInput class="city" :placeholder="'Alex'">
+                <template v-slot:title> City </template>
+                <template v-slot:error-message> Wrong Format </template>
+              </CustomInput>
+              <CustomInput class="country" :placeholder="'Alex'">
+                <template v-slot:title> Countrty </template>
+                <template v-slot:error-message> Wrong Format </template>
+              </CustomInput>
             </div>
-            <div class="form-container">
-              <span class="sub-title-manrope-bold peru">PAYMENT DETAILS</span>
-              <div class="payment-method">
-                <span class="payment-method-title">Payment Method</span>
-                <RadioComponent
-                  :radioTitle="'e-Money'"
-                  :radioValue="0"
-                  v-model:checked="selectedPayment"
-                ></RadioComponent>
-                <RadioComponent
-                  :radioTitle="'Cash on Delivery'"
-                  :radioValue="1"
-                  v-model:checked="selectedPayment"
-                ></RadioComponent>
-              </div>
-              <div class="payment-method-info">
-                <CustomInput class="e-money-number" :placeholder="'Alex'">
-                  <template v-slot:title> e-Money Number </template>
-                  <template v-slot:error-message> Wrong Format </template>
-                </CustomInput>
-                <CustomInput class="e-money-pin" :placeholder="'Alex'">
-                  <template v-slot:title> e-Money PIN </template>
-                  <template v-slot:error-message> Wrong Format </template>
-                </CustomInput>
-              </div>
+          </div>
+          <div class="form-container">
+            <span class="sub-title-manrope-bold peru">PAYMENT DETAILS</span>
+            <div class="payment-method">
+              <span class="payment-method-title">Payment Method</span>
+              <RadioComponent
+                :radioTitle="'e-Money'"
+                :radioValue="0"
+                v-model:checked="selectedPayment"
+              ></RadioComponent>
+              <RadioComponent
+                :radioTitle="'Cash on Delivery'"
+                :radioValue="1"
+                v-model:checked="selectedPayment"
+              ></RadioComponent>
+            </div>
+            <div class="payment-method-info">
+              <CustomInput class="e-money-number" :placeholder="'Alex'">
+                <template v-slot:title> e-Money Number </template>
+                <template v-slot:error-message> Wrong Format </template>
+              </CustomInput>
+              <CustomInput class="e-money-pin" :placeholder="'Alex'">
+                <template v-slot:title> e-Money PIN </template>
+                <template v-slot:error-message> Wrong Format </template>
+              </CustomInput>
             </div>
           </div>
         </div>
-        <div class="summary">
-          <span>SUMMARY</span>
-          <div>
-            <div class="item" v-for="product in store.cart.products" :key="product.id">
-              <div class="item-container">
-                <img :src="product.images[0].url" alt="" />
-                <div class="item-detail">
-                  <span class="body-manrope-medium">{{ product.name }}</span>
-                  <span class="opacity-50 overline-manrope-regula">
-                    ${{ product.price.salePrice }}</span
-                  >
-                </div>
+      </div>
+      <div class="summary">
+        <span>SUMMARY</span>
+        <div>
+          <div class="item" v-for="product in store.cart.products" :key="product.id">
+            <div class="item-container">
+              <img :src="product.images[0].url" alt="" />
+              <div class="item-detail">
+                <span class="body-manrope-medium">{{ product.name }}</span>
+                <span class="opacity-50 overline-manrope-regula">
+                  ${{ product.price.salePrice }}</span
+                >
               </div>
-              <span class="amount opacity-50">x{{ product.count }}</span>
             </div>
+            <span class="amount opacity-50">x{{ product.count }}</span>
           </div>
-          <div class="summary-container">
-            <div class="summary-info">
-              <span class="body-manrope-medium opacity-50">TOTAL</span>
-              <span>$</span>
-            </div>
-            <div class="summary-info">
-              <span class="body-manrope-medium opacity-50">SHIPPING</span>
-              <span>$</span>
-            </div>
-            <div class="summary-info">
-              <span class="body-manrope-medium opacity-50">VAT(INCLUDED)</span>
-              <span>$</span>
-            </div>
-            <div class="summary-info">
-              <span class="body-manrope-medium opacity-50">GRAND TOTAL</span>
-              <span class="peru">$</span>
-            </div>
-          </div>
-          <button class="button-1-default">CONTINUE & PAY</button>
         </div>
+        <div class="summary-container">
+          <div class="summary-info">
+            <span class="body-manrope-medium opacity-50">TOTAL</span>
+            <span>$</span>
+          </div>
+          <div class="summary-info">
+            <span class="body-manrope-medium opacity-50">SHIPPING</span>
+            <span>$</span>
+          </div>
+          <div class="summary-info">
+            <span class="body-manrope-medium opacity-50">VAT(INCLUDED)</span>
+            <span>$</span>
+          </div>
+          <div class="summary-info">
+            <span class="body-manrope-medium opacity-50">GRAND TOTAL</span>
+            <span class="peru">$</span>
+          </div>
+        </div>
+        <button class="button-1-default">CONTINUE & PAY</button>
       </div>
     </div>
   </main>
@@ -134,13 +132,11 @@ onMounted(() => {
 </template>
 
 <style scoped>
-.checkout-conatiner {
-  display: flex;
-  flex-direction: column;
-  gap: 38px;
+main > span {
+  margin-bottom: 24px;
 }
 
-.checkout-info {
+.checkout-conatiner {
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 30px;
@@ -218,7 +214,7 @@ onMounted(() => {
   flex-direction: column;
   gap: 30px;
   padding: 30px;
-  height: 50%;
+  align-self: start;
 }
 
 .summary > span {
