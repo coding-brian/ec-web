@@ -53,7 +53,7 @@ input:hover {
 
 input:focus {
   outline: none;
-  border: 2px var(--peru) solid;
+  border: 1px var(--peru) solid;
 }
 
 input::placeholder {

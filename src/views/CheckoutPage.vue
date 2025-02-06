@@ -3,13 +3,30 @@ import CustomInput from '@/components/CustomInput.vue'
 import NavBar from '@/components/NavBar.vue'
 import FooterComponent from '@/components/FooterComponent.vue'
 import RadioComponent from '@/components/RadioComponent.vue'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useCartStore } from '@/stores/cart'
 import { useRouter } from 'vue-router'
+import { useShopStore } from '@/stores/shop'
 
 const selectedPayment = ref(0)
 const store = useCartStore()
+
 const router = useRouter()
+
+const shopStore = useShopStore()
+
+const total = computed(() =>
+  store.cart.products.reduce((sum, item) => sum + item.price.salePrice * item.count, 0),
+)
+
+const grandTotal = computed(() => total.value + shopStore.shop.shippingFee)
+
+// console.log(1 + shopStore.shop.taxRate / 100)
+// console.log(Math.floor(total.value / 1.2))
+
+const vat = computed(
+  () => total.value - Math.floor(total.value / (1 + shopStore.shop.taxRate / 100)),
+)
 
 onMounted(() => {
   document.body.style.backgroundColor = 'var(--anti-flash-white)'
@@ -97,7 +114,7 @@ onMounted(() => {
             <div class="item-container">
               <img :src="product.images[0].url" alt="" />
               <div class="item-detail">
-                <span class="body-manrope-medium">{{ product.name }}</span>
+                <span class="body-manrope-medium">{{ product.shortName }}</span>
                 <span class="opacity-50 overline-manrope-regula">
                   ${{ product.price.salePrice }}</span
                 >
@@ -109,19 +126,19 @@ onMounted(() => {
         <div class="summary-container">
           <div class="summary-info">
             <span class="body-manrope-medium opacity-50">TOTAL</span>
-            <span>$</span>
+            <span>${{ total }}</span>
           </div>
           <div class="summary-info">
             <span class="body-manrope-medium opacity-50">SHIPPING</span>
-            <span>$</span>
+            <span>${{ shopStore.shop.shippingFee }}</span>
           </div>
           <div class="summary-info">
             <span class="body-manrope-medium opacity-50">VAT(INCLUDED)</span>
-            <span>$</span>
+            <span>${{ vat }}</span>
           </div>
           <div class="summary-info">
             <span class="body-manrope-medium opacity-50">GRAND TOTAL</span>
-            <span class="peru">$</span>
+            <span class="peru">${{ grandTotal }}</span>
           </div>
         </div>
         <button class="button-1-default">CONTINUE & PAY</button>
@@ -137,6 +154,7 @@ main > span {
 }
 
 .checkout-conatiner {
+  width: 1110px;
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 30px;
@@ -277,7 +295,9 @@ main > span {
 /* Tablet */
 @media screen and (max-width: 1024px) {
   .checkout-conatiner {
+    width: 669px;
     gap: 24px;
+    grid-template-columns: auto;
   }
 
   .checkout-info {
@@ -293,6 +313,11 @@ main > span {
 
 /* Mobile */
 @media screen and (max-width: 767px) {
+  .checkout-conatiner {
+    width: 327px;
+    gap: 24px;
+  }
+
   .billing-detail,
   .shipping-info {
     display: grid;
