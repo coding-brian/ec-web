@@ -2,10 +2,12 @@
 import { useCartStore } from '@/stores/cart'
 import { computed } from 'vue'
 import MaskComponent from './MaskComponent.vue'
+import { useRouter } from 'vue-router'
 
 const props = defineProps({ isShow: { type: Boolean, default: false } })
 const emit = defineEmits(['update:isShow'])
 
+const router = useRouter()
 const store = useCartStore()
 const total = computed(() => {
   let result = 0
@@ -31,6 +33,12 @@ const removeAll = () => {
 
 const close = () => {
   emit('update:isShow', false)
+}
+
+const checkout = () => {
+  if (store.cart.products.length > 0) {
+    router.push({ name: 'checkout' })
+  }
 }
 </script>
 
@@ -72,7 +80,7 @@ const close = () => {
           <span class="body-manrope-medium opacity-50">TOTAL</span>
           <span class="h6-manrope-bold">${{ total }}</span>
         </div>
-        <button class="button-1-default">CHECKOUT</button>
+        <button class="button-1-default" @click="checkout">CHECKOUT</button>
       </div>
     </div>
   </MaskComponent>

@@ -1,5 +1,5 @@
 <script setup>
-import AddToCartButton from './Button/AddToCartButton.vue'
+import AddToCartButton from '@/components/Button/AddToCartButton.vue'
 import { useCartStore } from '@/stores/cart'
 import { ref } from 'vue'
 

@@ -15,6 +15,14 @@ const socialMedias = ref([
     hoverUrl: '/images/icon-instagram-peru.svg',
   },
 ])
+
+const mouseenter = (e, socialMedia) => {
+  e.target.src = socialMedia.hoverUrl
+}
+
+const mouseleave = (e, socialMedia) => {
+  e.target.src = socialMedia.url
+}
 </script>
 
 <template>

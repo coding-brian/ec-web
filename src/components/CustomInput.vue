@@ -36,7 +36,7 @@ defineProps({ placeholder: String })
 
 input {
   width: 100%;
-  border: 2px #cfcfcf solid;
+  border: 1px var(--american-silver) solid;
   border-radius: 8px;
   padding-top: 18px;
   padding-bottom: 18px;

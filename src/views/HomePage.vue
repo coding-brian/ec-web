@@ -15,21 +15,6 @@ const { productCategories } = storeToRefs(useProductCategoryStore())
 const news = ref()
 const { objectProperty } = useDeviceSize()
 
-const socialMedias = ref([
-  {
-    url: '/images/icon-facebook.svg',
-    hoverUrl: '/images/icon-facebook-peru.svg',
-  },
-  {
-    url: '/images/icon-twitter.svg',
-    hoverUrl: '/images/icon-twitter-peru.svg',
-  },
-  {
-    url: '/images/icon-instagram.svg',
-    hoverUrl: '/images/icon-instagram-peru.svg',
-  },
-])
-
 const productCategoryInHomepage = computed(() => {
   if (!productCategories.value || productCategories.value.length <= 0) return null
 
@@ -48,14 +33,6 @@ const productCategoryInHomepage = computed(() => {
 
   return result
 })
-
-const mouseenter = (e, socialMedia) => {
-  e.target.src = socialMedia.hoverUrl
-}
-
-const mouseleave = (e, socialMedia) => {
-  e.target.src = socialMedia.url
-}
 
 onMounted(async () => {
   news.value = await getNewsAsync()
