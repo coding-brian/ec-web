@@ -1,8 +1,11 @@
 <script setup>
-import { isNull } from 'lodash-es'
 import { ref } from 'vue'
 
-const props = defineProps({ placeholder: String, value: {} })
+const props = defineProps({
+  placeholder: String,
+  value: {},
+  validate: { type: Function, default: null },
+})
 
 const emit = defineEmits(['update:value', 'blur'])
 
@@ -14,11 +17,13 @@ const change = (e) => {
 }
 
 const validate = () => {
-  if (isNull(props.value)) return false
+  if (props.validate) {
+    props.validate()
+  }
   return true
 }
 
-defineExpose({ validate })
+// defineExpose({ validate })
 </script>
 
 <template>
@@ -35,7 +40,7 @@ defineExpose({ validate })
       :placeholder="placeholder"
       :value="props.value"
       @input="change"
-      @blur="emit('blur')"
+      @blur="validate"
     />
   </div>
 </template>

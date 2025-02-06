@@ -7,6 +7,7 @@ import { computed, onMounted, reactive, ref } from 'vue'
 import { useCartStore } from '@/stores/cart'
 import { useRouter } from 'vue-router'
 import { useShopStore } from '@/stores/shop'
+import { isNull, isEmpty } from 'lodash-es'
 
 const selectedPayment = ref(0)
 const store = useCartStore()
@@ -27,30 +28,70 @@ const form = reactive({
     element: null,
     checked: true,
     erroMessage: 'Incorrect Format',
+    validate: () => {
+      if (isNull(form.name.value) || isEmpty(form.name.value)) {
+        form.name.checked = false
+        return false
+      }
+      form.name.checked = true
+      return true
+    },
   },
   email: {
     value: null,
     element: null,
     checked: true,
     erroMessage: 'Incorrect Format',
+    validate: () => {
+      if (isNull(form.email.value) || isEmpty(form.email.value)) {
+        form.email.checked = false
+        return false
+      }
+      form.email.checked = true
+      return true
+    },
   },
   phone: {
     value: null,
     element: null,
     checked: true,
     erroMessage: 'Incorrect Format',
+    validate: () => {
+      if (isNull(form.phone.value) || isEmpty(form.phone.value)) {
+        form.phone.checked = false
+        return false
+      }
+      form.phone.checked = true
+      return true
+    },
   },
   address: {
     value: null,
     element: null,
     checked: true,
     erroMessage: 'Incorrect Format',
+    validate: () => {
+      if (isNull(form.address.value) || isEmpty(form.address.value)) {
+        form.address.checked = false
+        return false
+      }
+      form.address.checked = true
+      return true
+    },
   },
   zipCode: {
     value: null,
     element: null,
     checked: true,
     erroMessage: 'Incorrect Format',
+    validate: () => {
+      if (isNull(form.zipCode.value) || isEmpty(form.zipCode.value)) {
+        form.zipCode.checked = false
+        return false
+      }
+      form.zipCode.checked = true
+      return true
+    },
   },
   city: {
     value: null,
@@ -64,15 +105,54 @@ const form = reactive({
     checked: true,
     erroMessage: 'Incorrect Format',
   },
+  eMoneyNumber: {
+    value: null,
+    element: null,
+    checked: true,
+    erroMessage: 'Incorrect Format',
+    validate: () => {
+      if (isNull(form.eMoneyNumber.value) || isEmpty(form.eMoneyNumber.value)) {
+        form.eMoneyNumber.checked = false
+        return false
+      }
+      form.eMoneyNumber.checked = true
+      return true
+    },
+  },
+  eMoneyPin: {
+    value: null,
+    element: null,
+    checked: true,
+    erroMessage: 'Incorrect Format',
+    validate: () => {
+      if (isNull(form.eMoneyPin.value) || isEmpty(form.eMoneyPin.value)) {
+        form.eMoneyPin.checked = false
+        return false
+      }
+      form.eMoneyPin.checked = true
+      return true
+    },
+  },
 })
+
+const check = () => {
+  let result = []
+  for (const [key, entry] of Object.entries(form)) {
+    if (entry.validate) entry.validate()
+    result.push(entry.checked)
+  }
+
+  return result.every((item) => item)
+}
+
+const order = () => {
+  if (!check()) return
+  console.log('成功')
+}
 
 const vat = computed(
   () => total.value - Math.floor(total.value / (1 + shopStore.shop.taxRate / 100)),
 )
-
-const blur = (item) => {
-  item.checked = item.element.validate()
-}
 
 onMounted(() => {
   document.body.style.backgroundColor = 'var(--anti-flash-white)'
@@ -94,7 +174,7 @@ onMounted(() => {
                 class="name"
                 :class="{ error: !form.name.checked }"
                 :ref="(el) => (form.name.element = el)"
-                @blur="blur(form.name)"
+                :validate="form.name.validate"
                 v-model:value="form.name.value"
                 :placeholder="'Alexei Ward'"
               >
@@ -178,13 +258,27 @@ onMounted(() => {
               ></RadioComponent>
             </div>
             <div class="payment-method-info">
-              <CustomInput class="e-money-number" :placeholder="'238521993'">
+              <CustomInput
+                class="e-money-number"
+                :placeholder="'238521993'"
+                :class="{ error: !form.eMoneyNumber.checked }"
+                :ref="(el) => (form.eMoneyNumber.element = el)"
+                @blur="blur(form.eMoneyNumber)"
+                v-model:value="form.eMoneyNumber.value"
+              >
                 <template v-slot:title> e-Money Number* </template>
-                <template v-slot:error-message> Wrong Format </template>
+                <template v-slot:error-message> {{ form.eMoneyNumber.erroMessage }} </template>
               </CustomInput>
-              <CustomInput class="e-money-pin" :placeholder="'6891'">
+              <CustomInput
+                class="e-money-pin"
+                :placeholder="'6891'"
+                :class="{ error: !form.eMoneyPin.checked }"
+                :ref="(el) => (form.eMoneyPin.element = el)"
+                @blur="blur(form.eMoneyPin)"
+                v-model:value="form.eMoneyPin.value"
+              >
                 <template v-slot:title> e-Money PIN* </template>
-                <template v-slot:error-message> Wrong Format </template>
+                <template v-slot:error-message> {{ form.eMoneyPin.erroMessage }} </template>
               </CustomInput>
             </div>
           </div>
@@ -224,7 +318,7 @@ onMounted(() => {
             <span class="peru">${{ grandTotal }}</span>
           </div>
         </div>
-        <button class="button-1-default">CONTINUE & PAY</button>
+        <button class="button-1-default" @click="order">CONTINUE & PAY</button>
       </div>
     </div>
   </main>
