@@ -3,7 +3,7 @@ import CustomInput from '@/components/CustomInput.vue'
 import NavBar from '@/components/NavBar.vue'
 import FooterComponent from '@/components/FooterComponent.vue'
 import RadioComponent from '@/components/RadioComponent.vue'
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, reactive, ref } from 'vue'
 import { useCartStore } from '@/stores/cart'
 import { useRouter } from 'vue-router'
 import { useShopStore } from '@/stores/shop'
@@ -21,12 +21,58 @@ const total = computed(() =>
 
 const grandTotal = computed(() => total.value + shopStore.shop.shippingFee)
 
-// console.log(1 + shopStore.shop.taxRate / 100)
-// console.log(Math.floor(total.value / 1.2))
+const form = reactive({
+  name: {
+    value: null,
+    element: null,
+    checked: true,
+    erroMessage: 'Incorrect Format',
+  },
+  email: {
+    value: null,
+    element: null,
+    checked: true,
+    erroMessage: 'Incorrect Format',
+  },
+  phone: {
+    value: null,
+    element: null,
+    checked: true,
+    erroMessage: 'Incorrect Format',
+  },
+  address: {
+    value: null,
+    element: null,
+    checked: true,
+    erroMessage: 'Incorrect Format',
+  },
+  zipCode: {
+    value: null,
+    element: null,
+    checked: true,
+    erroMessage: 'Incorrect Format',
+  },
+  city: {
+    value: null,
+    element: null,
+    checked: true,
+    erroMessage: 'Incorrect Format',
+  },
+  country: {
+    value: null,
+    element: null,
+    checked: true,
+    erroMessage: 'Incorrect Format',
+  },
+})
 
 const vat = computed(
   () => total.value - Math.floor(total.value / (1 + shopStore.shop.taxRate / 100)),
 )
+
+const blur = (item) => {
+  item.checked = item.element.validate()
+}
 
 onMounted(() => {
   document.body.style.backgroundColor = 'var(--anti-flash-white)'
@@ -44,45 +90,82 @@ onMounted(() => {
           <div class="form-container">
             <span class="sub-title-manrope-bold peru">Billing Details</span>
             <div class="billing-detail">
-              <CustomInput class="name" :placeholder="'Alex'">
-                <template v-slot:title> Name </template>
-                <template v-slot:error-message> Wrong Format </template>
+              <CustomInput
+                class="name"
+                :class="{ error: !form.name.checked }"
+                :ref="(el) => (form.name.element = el)"
+                @blur="blur(form.name)"
+                v-model:value="form.name.value"
+                :placeholder="'Alexei Ward'"
+              >
+                <template v-slot:title> Name* </template>
+                <template v-slot:error-message> {{ form.name.erroMessage }} </template>
               </CustomInput>
-              <CustomInput class="email-address" :placeholder="'Alex'">
-                <template v-slot:title> Email Address </template>
-                <template v-slot:error-message> Wrong Format </template>
+              <CustomInput
+                class="email-address"
+                :placeholder="'alexei@mail.com'"
+                :class="{ error: !form.email.checked }"
+                :ref="(el) => (form.email.element = el)"
+                @blur="blur(form.email)"
+                v-model:value="form.email.value"
+              >
+                <template v-slot:title> Email Address* </template>
+                <template v-slot:error-message> {{ form.email.erroMessage }} </template>
               </CustomInput>
-              <CustomInput class="phone-number" :placeholder="'Alex'">
-                <template v-slot:title> Phone Number </template>
-                <template v-slot:error-message> Wrong Format </template>
+              <CustomInput
+                class="phone-number"
+                :placeholder="'+1 202-555-0136'"
+                :class="{ error: !form.phone.checked }"
+                :ref="(el) => (form.phone.element = el)"
+                @blur="blur(form.phone)"
+                v-model:value="form.phone.value"
+              >
+                <template v-slot:title> Phone Number* </template>
+                <template v-slot:error-message> {{ form.phone.erroMessage }} </template>
               </CustomInput>
             </div>
           </div>
           <div class="form-container">
             <span class="sub-title-manrope-bold peru">SHIPPING-INFO</span>
             <div class="shipping-info">
-              <CustomInput class="address" :placeholder="'Alex'">
-                <template v-slot:title> Address </template>
-                <template v-slot:error-message> Wrong Format </template>
+              <CustomInput
+                class="address"
+                :placeholder="'1137 Williams Avenue'"
+                :class="{ error: !form.address.checked }"
+                :ref="(el) => (form.address.element = el)"
+                @blur="blur(form.address)"
+                v-model:value="form.address.value"
+              >
+                <template v-slot:title> Address* </template>
+                <template v-slot:error-message> {{ form.address.erroMessage }} </template>
               </CustomInput>
-              <CustomInput class="zip-code" :placeholder="'Alex'">
-                <template v-slot:title> ZIP Code </template>
-                <template v-slot:error-message> Wrong Format </template>
+              <CustomInput
+                class="zip-code"
+                :placeholder="'10001'"
+                :class="{ error: !form.zipCode.checked }"
+                :ref="(el) => (form.zipCode.element = el)"
+                @blur="blur(form.zipCode)"
+                v-model:value="form.zipCode.value"
+              >
+                <template v-slot:title> ZIP Code* </template>
+                <template v-slot:error-message> {{ form.zipCode.erroMessage }} </template>
               </CustomInput>
-              <CustomInput class="city" :placeholder="'Alex'">
+              <CustomInput class="city" :placeholder="'New York'" v-model:value="form.city.value">
                 <template v-slot:title> City </template>
-                <template v-slot:error-message> Wrong Format </template>
               </CustomInput>
-              <CustomInput class="country" :placeholder="'Alex'">
+              <CustomInput
+                class="country"
+                :placeholder="'United States'"
+                v-model:value="form.country.value"
+              >
                 <template v-slot:title> Countrty </template>
-                <template v-slot:error-message> Wrong Format </template>
               </CustomInput>
             </div>
           </div>
           <div class="form-container">
             <span class="sub-title-manrope-bold peru">PAYMENT DETAILS</span>
             <div class="payment-method">
-              <span class="payment-method-title">Payment Method</span>
+              <span class="payment-method-title">Payment Method*</span>
               <RadioComponent
                 :radioTitle="'e-Money'"
                 :radioValue="0"
@@ -95,12 +178,12 @@ onMounted(() => {
               ></RadioComponent>
             </div>
             <div class="payment-method-info">
-              <CustomInput class="e-money-number" :placeholder="'Alex'">
-                <template v-slot:title> e-Money Number </template>
+              <CustomInput class="e-money-number" :placeholder="'238521993'">
+                <template v-slot:title> e-Money Number* </template>
                 <template v-slot:error-message> Wrong Format </template>
               </CustomInput>
-              <CustomInput class="e-money-pin" :placeholder="'Alex'">
-                <template v-slot:title> e-Money PIN </template>
+              <CustomInput class="e-money-pin" :placeholder="'6891'">
+                <template v-slot:title> e-Money PIN* </template>
                 <template v-slot:error-message> Wrong Format </template>
               </CustomInput>
             </div>
@@ -151,6 +234,13 @@ onMounted(() => {
 <style scoped>
 main > span {
   margin-bottom: 24px;
+  justify-self: start;
+  cursor: pointer;
+}
+
+main > span:hover {
+  color: var(--peru);
+  opacity: 100%;
 }
 
 .checkout-conatiner {

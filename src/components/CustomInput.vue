@@ -1,14 +1,42 @@
 <script setup>
-defineProps({ placeholder: String })
+import { isNull } from 'lodash-es'
+import { ref } from 'vue'
+
+const props = defineProps({ placeholder: String, value: {} })
+
+const emit = defineEmits(['update:value', 'blur'])
+
+const element = ref(null)
+
+const change = (e) => {
+  element.value.classList.remove('error')
+  emit('update:value', e.target.value)
+}
+
+const validate = () => {
+  if (isNull(props.value)) return false
+  return true
+}
+
+defineExpose({ validate })
 </script>
 
 <template>
-  <div class="input-container">
+  <div class="input-container" ref="element">
     <div class="title-container">
       <span class="title"><slot name="title">title</slot></span>
       <span class="error-message"><slot name="error-message">erro-message</slot></span>
     </div>
-    <input class="" type="text" name="" id="" :placeholder="placeholder" />
+    <input
+      class=""
+      type="text"
+      name=""
+      id=""
+      :placeholder="placeholder"
+      :value="props.value"
+      @input="change"
+      @blur="emit('blur')"
+    />
   </div>
 </template>
 
