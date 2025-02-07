@@ -1,6 +1,6 @@
 <script setup>
 const props = defineProps({
-  radioValue: { type: Number },
+  radioValue: {},
   radioTitle: { type: String },
   checked: {},
 })
@@ -30,6 +30,7 @@ label {
   font-size: 14px;
   font-weight: bold;
   letter-spacing: -0.25px;
+  cursor: pointer;
 }
 
 .radio-container {
@@ -40,9 +41,10 @@ label {
   padding-top: 16px;
   padding-bottom: 16px;
   padding-left: 16px;
+  cursor: pointer;
 }
 
-.radio-container:focus {
+.radio-container:has(input:checked) {
   border: 1px var(--peru) solid;
 }
 
@@ -57,9 +59,10 @@ input {
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 }
 
-input:focus {
+input:checked {
   outline: none;
 }
 

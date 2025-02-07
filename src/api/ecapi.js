@@ -22,3 +22,5 @@ export const getStoreAsync = async () => await request.get('/store')
 export const getProductCategoriesAsync = async () => await request.get('/productCategories')
 
 export const getProductCategoryAsync = async (id) => await request.get(`/productCategories/${id}`)
+
+export const getPaymentMethodsAsync = async () => await request.get(`/paymentMethods`)

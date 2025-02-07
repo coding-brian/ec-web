@@ -8,6 +8,8 @@ import { useCartStore } from '@/stores/cart'
 import { useRouter } from 'vue-router'
 import { useShopStore } from '@/stores/shop'
 import { isNull, isEmpty } from 'lodash-es'
+import { getPaymentMethodsAsync } from '@/api/ecapi'
+import PaymentMethodType from '@/const/paymentMethodType.json'
 
 const selectedPayment = ref(0)
 const store = useCartStore()
@@ -15,12 +17,28 @@ const store = useCartStore()
 const router = useRouter()
 
 const shopStore = useShopStore()
+const paymentMethods = ref(null)
 
 const total = computed(() =>
   store.cart.products.reduce((sum, item) => sum + item.price.salePrice * item.count, 0),
 )
 
-const grandTotal = computed(() => total.value + shopStore.shop.shippingFee)
+const grandTotal = computed(() => {
+  if (shopStore.shop) {
+    return total.value + shopStore.shop.shippingFee
+  }
+
+  return total.value
+})
+
+const validate = (item) => {
+  if (isNull(item.value) || isEmpty(item.value)) {
+    item.checked = false
+    return false
+  }
+  item.checked = true
+  return true
+}
 
 const form = reactive({
   name: {
@@ -29,12 +47,7 @@ const form = reactive({
     checked: true,
     erroMessage: 'Incorrect Format',
     validate: () => {
-      if (isNull(form.name.value) || isEmpty(form.name.value)) {
-        form.name.checked = false
-        return false
-      }
-      form.name.checked = true
-      return true
+      return validate(form.name)
     },
   },
   email: {
@@ -43,12 +56,7 @@ const form = reactive({
     checked: true,
     erroMessage: 'Incorrect Format',
     validate: () => {
-      if (isNull(form.email.value) || isEmpty(form.email.value)) {
-        form.email.checked = false
-        return false
-      }
-      form.email.checked = true
-      return true
+      return validate(form.email)
     },
   },
   phone: {
@@ -57,12 +65,7 @@ const form = reactive({
     checked: true,
     erroMessage: 'Incorrect Format',
     validate: () => {
-      if (isNull(form.phone.value) || isEmpty(form.phone.value)) {
-        form.phone.checked = false
-        return false
-      }
-      form.phone.checked = true
-      return true
+      return validate(form.phone)
     },
   },
   address: {
@@ -71,12 +74,7 @@ const form = reactive({
     checked: true,
     erroMessage: 'Incorrect Format',
     validate: () => {
-      if (isNull(form.address.value) || isEmpty(form.address.value)) {
-        form.address.checked = false
-        return false
-      }
-      form.address.checked = true
-      return true
+      return validate(form.address)
     },
   },
   zipCode: {
@@ -85,12 +83,7 @@ const form = reactive({
     checked: true,
     erroMessage: 'Incorrect Format',
     validate: () => {
-      if (isNull(form.zipCode.value) || isEmpty(form.zipCode.value)) {
-        form.zipCode.checked = false
-        return false
-      }
-      form.zipCode.checked = true
-      return true
+      return validate(form.zipCode)
     },
   },
   city: {
@@ -111,10 +104,10 @@ const form = reactive({
     checked: true,
     erroMessage: 'Incorrect Format',
     validate: () => {
-      if (isNull(form.eMoneyNumber.value) || isEmpty(form.eMoneyNumber.value)) {
-        form.eMoneyNumber.checked = false
-        return false
+      if (selectedPayment.value.type === PaymentMethodType.creditCard) {
+        return validate(form.eMoneyNumber)
       }
+
       form.eMoneyNumber.checked = true
       return true
     },
@@ -125,10 +118,10 @@ const form = reactive({
     checked: true,
     erroMessage: 'Incorrect Format',
     validate: () => {
-      if (isNull(form.eMoneyPin.value) || isEmpty(form.eMoneyPin.value)) {
-        form.eMoneyPin.checked = false
-        return false
+      if (selectedPayment.value.type === PaymentMethodType.creditCard) {
+        return validate(form.eMoneyPin)
       }
+
       form.eMoneyPin.checked = true
       return true
     },
@@ -137,11 +130,10 @@ const form = reactive({
 
 const check = () => {
   let result = []
-  for (const [key, entry] of Object.entries(form)) {
-    if (entry.validate) entry.validate()
-    result.push(entry.checked)
+  for (const item of Object.entries(form)) {
+    if (item[1].validate) item[1].validate()
+    result.push(item[1].checked)
   }
-
   return result.every((item) => item)
 }
 
@@ -150,12 +142,18 @@ const order = () => {
   console.log('成功')
 }
 
-const vat = computed(
-  () => total.value - Math.floor(total.value / (1 + shopStore.shop.taxRate / 100)),
-)
+const vat = computed(() => {
+  if (shopStore.shop) {
+    return total.value - Math.floor(total.value / (1 + shopStore.shop.taxRate / 100))
+  }
 
-onMounted(() => {
+  return total.value - total.value
+})
+
+onMounted(async () => {
   document.body.style.backgroundColor = 'var(--anti-flash-white)'
+  paymentMethods.value = await getPaymentMethodsAsync()
+  selectedPayment.value = paymentMethods.value[0]
 })
 </script>
 
@@ -244,20 +242,21 @@ onMounted(() => {
           </div>
           <div class="form-container">
             <span class="sub-title-manrope-bold peru">PAYMENT DETAILS</span>
-            <div class="payment-method">
+            <div class="payment-method" v-if="paymentMethods && paymentMethods.length > 0">
               <span class="payment-method-title">Payment Method*</span>
               <RadioComponent
-                :radioTitle="'e-Money'"
-                :radioValue="0"
+                v-for="paymentMethod in paymentMethods"
+                :key="paymentMethod.id"
+                :radioTitle="paymentMethod.name"
+                :radioValue="paymentMethod"
                 v-model:checked="selectedPayment"
-              ></RadioComponent>
-              <RadioComponent
-                :radioTitle="'Cash on Delivery'"
-                :radioValue="1"
-                v-model:checked="selectedPayment"
-              ></RadioComponent>
+              >
+              </RadioComponent>
             </div>
-            <div class="payment-method-info">
+            <div
+              class="payment-method-info"
+              v-if="selectedPayment.type === PaymentMethodType.creditCard"
+            >
               <CustomInput
                 class="e-money-number"
                 :placeholder="'238521993'"
@@ -305,7 +304,7 @@ onMounted(() => {
             <span class="body-manrope-medium opacity-50">TOTAL</span>
             <span>${{ total }}</span>
           </div>
-          <div class="summary-info">
+          <div class="summary-info" v-if="shopStore.shop">
             <span class="body-manrope-medium opacity-50">SHIPPING</span>
             <span>${{ shopStore.shop.shippingFee }}</span>
           </div>
