@@ -6,6 +6,7 @@ import FooterComponent from '@/components/FooterComponent.vue'
 import NavBar from '@/components/NavBar.vue'
 import { useRouter } from 'vue-router'
 import CustomInput from '@/components/CustomInput.vue'
+import GoBack from '@/components/Text/GoBack.vue'
 
 const router = useRouter()
 let timeCounter = ref(0)
@@ -165,7 +166,7 @@ const submitAsync = debounce(async () => {
 <template>
   <NavBar></NavBar>
   <main>
-    <span class="body-manrope-medium opacity-50" @click="router.back()">Go Back</span>
+    <GoBack></GoBack>
     <div class="register-container">
       <span class="h3-manrope-bold register-container-title">註冊</span>
       <div class="form">
@@ -223,6 +224,7 @@ const submitAsync = debounce(async () => {
             :validate="form.password.validate"
             v-model:value="form.password.value"
             :placeholder="''"
+            :type="'password'"
           >
             <template v-slot:title> Password* </template>
             <template v-slot:error-message> {{ form.password.erroMessage }} </template>

@@ -6,7 +6,7 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'index',
+      name: '',
       meta: {
         requireAuth: false,
       },
@@ -52,7 +52,7 @@ const router = createRouter({
       beforeEnter() {
         const userStore = useUserStore()
         // TODO 如果已經登入狀態，再去登入頁，要導去特定一頁
-        if (userStore.IsAuthorizated()) return { name: 'index' }
+        if (userStore.IsAuthorizated()) return { name: 'home' }
 
         return true
       },

@@ -5,6 +5,7 @@ const props = defineProps({
   placeholder: String,
   value: {},
   validate: { type: Function, default: null },
+  type: { type: String, default: 'text' },
 })
 
 const emit = defineEmits(['update:value', 'blur'])
@@ -31,10 +32,7 @@ const validate = () => {
       <span class="error-message"><slot name="error-message">erro-message</slot></span>
     </div>
     <input
-      class=""
-      type="text"
-      name=""
-      id=""
+      :type="props.type"
       :placeholder="placeholder"
       :value="props.value"
       @input="change"

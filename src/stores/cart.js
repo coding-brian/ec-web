@@ -25,21 +25,8 @@ export const useCartStore = defineStore(
     }
 
     const merge = (source) => {
-      if (source.products.lenght > 0) {
-        source.products.forEach((product) => {
-          const catProducts = cart.products.filter((item) => item.id === product.id)
-          if (catProducts && catProducts.length > 0) {
-            catProducts[0].count = product.count
-          } else {
-            cart.products.push(product)
-          }
-        })
-
-        source = {
-          memberId: cart.memberId,
-          products: [],
-        }
-      }
+      if (!source) return true
+      if (source.products.length > 0) cart.products = source.products
 
       return true
     }
@@ -69,6 +56,7 @@ export const useCartStore = defineStore(
         setItem: (key, value) => {
           const userStore = useUserStore()
           const storageKey = userStore.IsAuthorizated() ? `cart_${userStore.user.id}` : key
+
           const { cart } = JSON.parse(value)
           localStorage.setItem(storageKey, JSON.stringify(cart))
         },

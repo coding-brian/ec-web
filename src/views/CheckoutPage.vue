@@ -5,16 +5,14 @@ import FooterComponent from '@/components/FooterComponent.vue'
 import RadioComponent from '@/components/RadioComponent.vue'
 import { computed, onMounted, reactive, ref } from 'vue'
 import { useCartStore } from '@/stores/cart'
-import { useRouter } from 'vue-router'
 import { useShopStore } from '@/stores/shop'
 import { isNull, isEmpty } from 'lodash-es'
 import { getPaymentMethodsAsync } from '@/api/ecapi'
 import PaymentMethodType from '@/const/paymentMethodType.json'
+import GoBack from '@/components/Text/GoBack.vue'
 
 const selectedPayment = ref(0)
 const store = useCartStore()
-
-const router = useRouter()
 
 const shopStore = useShopStore()
 const paymentMethods = ref(null)
@@ -160,7 +158,7 @@ onMounted(async () => {
 <template>
   <NavBar></NavBar>
   <main>
-    <span class="body-manrope-medium opacity-50" @click="router.back()">Go Back</span>
+    <GoBack></GoBack>
     <div class="checkout-conatiner">
       <div class="checkout">
         <span class="h3-manrope-bold">CHECKOUT</span>
