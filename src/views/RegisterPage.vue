@@ -1,127 +1,324 @@
 <script setup>
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 import { createAsync, createCaptchaAsync } from '@/api/ecapi'
-import { debounce, isNull } from 'lodash-es'
+import { debounce, isNull, isEmpty } from 'lodash-es'
+import FooterComponent from '@/components/FooterComponent.vue'
+import NavBar from '@/components/NavBar.vue'
+import { useRouter } from 'vue-router'
+import CustomInput from '@/components/CustomInput.vue'
+
+const router = useRouter()
+let timeCounter = ref(0)
+const captchaCode = ref('')
+
+const validate = (item) => {
+  if (isNull(item.value) || isEmpty(item.value)) return false
+  return true
+}
 
 const form = reactive({
-  phone: null,
-  captcha: null,
-  password: null,
-  confirmedPassword: null,
-  name: null,
-  email: null,
-  birth: null,
-  gender: null,
+  phone: {
+    value: null,
+    element: null,
+    checked: true,
+    erroMessage: 'Incorrect Format',
+    validate: () => {
+      form.phone.checked = validate(form.phone)
+      return form.phone.checked
+    },
+  },
+  captcha: {
+    value: null,
+    element: null,
+    checked: true,
+    erroMessage: 'Incorrect Format',
+    validate: () => {
+      form.captcha.checked = validate(form.captcha)
+      return form.captcha.checked
+    },
+  },
+  password: {
+    value: null,
+    element: null,
+    checked: true,
+    erroMessage: 'Incorrect Format',
+    validate: () => {
+      form.password.checked = validate(form.captcha)
+      return form.password.checked
+    },
+  },
+  confirmedPassword: {
+    value: null,
+    element: null,
+    checked: true,
+    erroMessage: 'Incorrect Format',
+    validate: () => {
+      form.confirmedPassword.checked = validate(form.confirmedPassword)
+      return form.confirmedPassword.checked
+    },
+  },
+  name: {
+    value: null,
+    element: null,
+    checked: true,
+    erroMessage: 'Incorrect Format',
+    validate: () => {
+      form.name.checked = validate(form.name)
+      return form.name.checked
+    },
+  },
+  email: {
+    value: null,
+    element: null,
+    checked: true,
+    erroMessage: 'Incorrect Format',
+    validate: () => {
+      const checkEmail = () => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+        if (!emailRegex.test(form.email.value)) {
+          return false
+        }
+
+        return true
+      }
+
+      form.email.checked = validate(form.email) && checkEmail()
+
+      return form.email.checked
+    },
+  },
+  birth: {
+    value: null,
+    element: null,
+    checked: true,
+    erroMessage: 'Incorrect Format',
+    validate: () => {
+      form.birth.checked = validate(form.birth)
+      return form.birth.checked
+    },
+  },
+  gender: {
+    value: null,
+    element: null,
+    checked: true,
+    erroMessage: 'Incorrect Format',
+    validate: () => {
+      form.gender.checked = validate(form.gender)
+      return form.gender.checked
+    },
+  },
 })
 
 const checkPassword = () => {
-  if (!form.password) return false
-  if (!form.confirmedPassword) return false
-  if (form.confirmedPassword !== form.password) return false
+  if (!form.password.value) return false
+  if (!form.confirmedPassword.value) return false
+  if (form.confirmedPassword.value !== form.password.value) return false
 
-  return true
-}
-
-const checkEmail = () => {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-
-  if (!emailRegex.test(form.email)) {
-    return false
-  }
-
-  return true
-}
-
-const checkPhone = () => {
-  if (!form.phone) return false
   return true
 }
 
 const check = () => {
-  let result = true
+  const result = []
 
-  if (!checkPassword() || !checkEmail()) {
-    result = false
+  if (!checkPassword()) result.push(false)
+
+  for (const item of Object.entries(form)) {
+    if (item[1].validate) item[1].validate()
+    result.push(item[1].checked)
   }
 
-  Object.keys(form).forEach((key) => {
-    if (isNull(form[key])) result = false
-  })
-
-  return result
+  return result.every((item) => item)
 }
+
 const sendCaptchaAsync = debounce(async () => {
-  if (!checkPhone()) return false
-  const { phone } = form
-  await createCaptchaAsync({ phone })
+  if (!form.phone.checked) return false
+  captchaCode.value = await createCaptchaAsync({ phone: form.phone.value })
+
+  timeCounter.value = 30000
+  const intervalId = setInterval(() => {
+    timeCounter.value -= 1000
+    if (timeCounter.value === 0) clearInterval(intervalId)
+  }, 1000)
 })
 
 const submitAsync = debounce(async () => {
-  if (check()) {
-    await createAsync(form)
+  try {
+    if (check()) {
+      const body = {}
+      for (const item of Object.entries(form)) {
+        body[item[0]] = item[1].value
+      }
+
+      const result = await createAsync(body)
+      if (result) router.push({ name: 'login' })
+      else {
+        console.log('Something wrong')
+      }
+    }
+  } catch (e) {
+    console.error(e)
   }
 })
 </script>
 
 <template>
-  <span>註冊</span>
-  <div>
-    <div>
-      <span>手機*</span>
-      <div>
-        <input type="text" v-model="form.phone" />
-        <button @click="sendCaptchaAsync">發送驗證碼</button>
-      </div>
-      <span>請輸入驗證碼:</span>
-      <div>
-        <input type="text" v-model="form.captcha" />
-      </div>
-    </div>
-    <div>
-      <div>
-        <span>姓名*</span>
-        <div>
-          <input type="text" v-model="form.name" />
+  <NavBar></NavBar>
+  <main>
+    <span class="body-manrope-medium opacity-50" @click="router.back()">Go Back</span>
+    <div class="register-container">
+      <span class="h3-manrope-bold register-container-title">註冊</span>
+      <div class="form">
+        <div class="field">
+          <CustomInput
+            class="phone"
+            :class="{ error: !form.phone.checked }"
+            :ref="(el) => (form.phone.element = el)"
+            :validate="form.phone.validate"
+            v-model:value="form.phone.value"
+            :placeholder="'+1 202-555-0136'"
+          >
+            <template v-slot:title> Phone* </template>
+            <template v-slot:error-message> {{ form.phone.erroMessage }} </template>
+          </CustomInput>
+          <div class="captcha-container">
+            <CustomInput
+              class="captcha"
+              :class="{ error: !form.captcha.checked }"
+              :ref="(el) => (form.captcha.element = el)"
+              :validate="form.captcha.validate"
+              v-model:value="form.captcha.value"
+              :placeholder="'請輸入驗證碼'"
+            >
+              <template v-slot:title> 請輸入驗證碼* </template>
+              <template v-slot:error-message> {{ form.captcha.erroMessage }} </template>
+            </CustomInput>
+            <span>{{ captchaCode }}</span>
+            <template v-if="timeCounter === 0">
+              <button @click="sendCaptchaAsync" :disabled="!validate(form.phone)">
+                發送驗證碼
+              </button>
+            </template>
+            <template v-else>
+              <button disabled>{{ timeCounter / 1000 }}</button>
+            </template>
+          </div>
         </div>
-      </div>
-      <div>
-        <span>密碼*</span>
-        <div>
-          <input type="password" v-model="form.password" />
+        <div class="field">
+          <CustomInput
+            class="name"
+            :class="{ error: !form.name.checked }"
+            :ref="(el) => (form.name.element = el)"
+            :validate="form.name.validate"
+            v-model:value="form.name.value"
+            :placeholder="'Alexei Ward'"
+          >
+            <template v-slot:title> Name* </template>
+            <template v-slot:error-message> {{ form.name.erroMessage }} </template>
+          </CustomInput>
+          <CustomInput
+            class="password"
+            :class="{ error: !form.password.checked }"
+            :ref="(el) => (form.password.element = el)"
+            :validate="form.password.validate"
+            v-model:value="form.password.value"
+            :placeholder="''"
+          >
+            <template v-slot:title> Password* </template>
+            <template v-slot:error-message> {{ form.password.erroMessage }} </template>
+          </CustomInput>
+          <CustomInput
+            class="confirmedPassword"
+            :class="{ error: !form.confirmedPassword.checked }"
+            :ref="(el) => (form.confirmedPassword.element = el)"
+            :validate="form.confirmedPassword.validate"
+            v-model:value="form.confirmedPassword.value"
+            :placeholder="''"
+          >
+            <template v-slot:title> ConfirmedPassword* </template>
+            <template v-slot:error-message> {{ form.confirmedPassword.erroMessage }} </template>
+          </CustomInput>
+          <CustomInput
+            class="email"
+            :class="{ error: !form.email.checked }"
+            :ref="(el) => (form.email.element = el)"
+            :validate="form.email.validate"
+            v-model:value="form.email.value"
+            :placeholder="''"
+          >
+            <template v-slot:title> Email* </template>
+            <template v-slot:error-message> {{ form.email.erroMessage }} </template>
+          </CustomInput>
+          <CustomInput
+            class="birth"
+            :class="{ error: !form.birth.checked }"
+            :ref="(el) => (form.birth.element = el)"
+            :validate="form.birth.validate"
+            v-model:value="form.birth.value"
+            :placeholder="''"
+          >
+            <template v-slot:title>
+              <span>Birth*</span>
+              <div><span>(YYYY-MM-DD)</span></div>
+            </template>
+            <template v-slot:error-message> {{ form.birth.erroMessage }} </template>
+          </CustomInput>
+          <div class="gender-container">
+            <span>性別*</span>
+            <select v-model="form.gender.value">
+              <option disabled selected value="null">Please Choose</option>
+              <option value="0">男</option>
+              <option value="1">女</option>
+              <option value="2">非二元</option>
+            </select>
+          </div>
         </div>
-      </div>
-      <div>
-        <span>確認密碼*</span>
-        <div>
-          <input type="password" v-model="form.confirmedPassword" />
-        </div>
-      </div>
-      <div>
-        <span>信箱*</span>
-        <div>
-          <input type="text" v-model="form.email" />
-        </div>
-      </div>
-      <div>
-        <span>生日*</span>
-        <div>
-          <input type="date" name="" id="" v-model="form.birth" />
-        </div>
-      </div>
-      <div>
-        <span>性別*</span>
-        <div>
-          <select name="" id="" v-model="form.gender">
-            <option disabled selected value="null">請選擇</option>
-            <option value="0">男</option>
-            <option value="1">女</option>
-            <option value="2">非二元</option>
-          </select>
-        </div>
-      </div>
-      <div>
         <button @click="submitAsync">註冊</button>
       </div>
     </div>
-  </div>
+  </main>
+
+  <FooterComponent></FooterComponent>
 </template>
+
+<style scoped>
+.register-container {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.register-container-title {
+  cursor: pointer;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.phone-container {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.gender-container {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.captcha-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+</style>

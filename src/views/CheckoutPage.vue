@@ -165,7 +165,7 @@ onMounted(async () => {
       <div class="checkout">
         <span class="h3-manrope-bold">CHECKOUT</span>
         <div class="form">
-          <div class="form-container">
+          <div class="field">
             <span class="sub-title-manrope-bold peru">Billing Details</span>
             <div class="billing-detail">
               <CustomInput
@@ -203,7 +203,7 @@ onMounted(async () => {
               </CustomInput>
             </div>
           </div>
-          <div class="form-container">
+          <div class="field">
             <span class="sub-title-manrope-bold peru">SHIPPING-INFO</span>
             <div class="shipping-info">
               <CustomInput
@@ -240,7 +240,7 @@ onMounted(async () => {
               </CustomInput>
             </div>
           </div>
-          <div class="form-container">
+          <div class="field">
             <span class="sub-title-manrope-bold peru">PAYMENT DETAILS</span>
             <div class="payment-method" v-if="paymentMethods && paymentMethods.length > 0">
               <span class="payment-method-title">Payment Method*</span>
@@ -321,6 +321,7 @@ onMounted(async () => {
       </div>
     </div>
   </main>
+
   <FooterComponent></FooterComponent>
 </template>
 
@@ -363,7 +364,7 @@ main > span:hover {
   margin-bottom: 41px;
 }
 
-.form-container > span {
+.field > span {
   display: block;
   margin-bottom: 16px;
 }

@@ -22,14 +22,12 @@ const validate = () => {
   }
   return true
 }
-
-// defineExpose({ validate })
 </script>
 
 <template>
   <div class="input-container" ref="element">
     <div class="title-container">
-      <span class="title"><slot name="title">title</slot></span>
+      <span class="title"><slot name="title"></slot></span>
       <span class="error-message"><slot name="error-message">erro-message</slot></span>
     </div>
     <input
@@ -57,7 +55,7 @@ const validate = () => {
   justify-content: space-between;
 }
 
-.title-container .title {
+.title {
   font-size: 12px;
   letter-spacing: -0.12px;
   font-weight: bold;
@@ -91,24 +89,21 @@ input:focus {
 
 input::placeholder {
   opacity: 40%;
-  color: black;
-  font-size: 14px;
-  font-weight: bold;
-  letter-spacing: -0.25px;
 }
 
-.input-container.error .title-container {
+.error .title-container {
   color: var(--rersian-red);
 }
 
-.input-container.error input {
+.error input {
   border: 2px var(--rersian-red) solid;
 }
 
-.input-container.error .error-message {
+.error .error-message {
   display: block;
   font-size: 12px;
   font-weight: 500;
   letter-spacing: -0.21px;
+  align-self: flex-end;
 }
 </style>
