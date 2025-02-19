@@ -12,14 +12,14 @@ export const useCartStore = defineStore(
       products: [],
     })
 
-    const addToCart = (product, count) => {
+    const addToCart = (product, quantity) => {
       const products = cart.products.filter((item) => item.id === product.id)
       if (products && products.length > 0) {
-        products[0].count = products[0].count + count
+        products[0].quantity = products[0].quantity + quantity
       } else {
         cart.products.push({
           ...product,
-          count,
+          quantity,
         })
       }
     }

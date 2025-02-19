@@ -5,16 +5,16 @@ import { ref } from 'vue'
 
 defineProps({ product: Object })
 
-const count = ref(1)
+const quantity = ref(1)
 const cartStore = useCartStore()
 
 const add = () => {
-  count.value++
+  quantity.value++
 }
 
 const minus = () => {
-  count.value--
-  if (count.value === 0) count.value = 1
+  quantity.value--
+  if (quantity.value === 0) quantity.value = 1
 }
 </script>
 
@@ -22,11 +22,11 @@ const minus = () => {
   <div class="quantity-container">
     <div class="quantity-selector">
       <button class="black opacity-25" @click="minus">-</button>
-      <span>{{ count }}</span>
+      <span>{{ quantity }}</span>
       <button class="black opacity-25" @click="add">+</button>
     </div>
     <slot>
-      <AddToCartButton @click="() => cartStore.addToCart(product, count)"></AddToCartButton>
+      <AddToCartButton @click="() => cartStore.addToCart(product, quantity)"></AddToCartButton>
     </slot>
   </div>
 </template>

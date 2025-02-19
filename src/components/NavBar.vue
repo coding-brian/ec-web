@@ -11,9 +11,11 @@ import { useRouter, useRoute } from 'vue-router'
 import NewProductComponet from '@/components/NewProduct.vue'
 import MaskComponent from './MaskComponent.vue'
 import CartComponent from './CartComponent.vue'
+import { useUserStore } from '@/stores/user'
 
 const router = useRouter()
 const route = useRoute()
+const userStore = useUserStore()
 
 const { getDeviceType } = useDeviceType()
 const { objectProperty } = useDeviceSize()
@@ -46,6 +48,15 @@ const setDivSizeToImage = (imageUrl) => {
 
 const getImage = (images) => {
   return images.filter((item) => item.isInBanner && item[objectProperty])[0]
+}
+
+const loginAsync = async () => {
+  if (userStore.IsAuthorizated()) {
+    //TODO: 會員中心
+    console.log('去會員中心')
+  } else {
+    router.push({ name: 'login' })
+  }
 }
 
 onMounted(async () => {
@@ -130,13 +141,9 @@ watch(
           </MaskComponent>
         </template>
         <CartComponent v-model:is-show="isShowCart"></CartComponent>
-        <li>
-          <img
-            src="/images/icon-cart.svg"
-            alt=""
-            class="cart"
-            @click="() => (isShowCart = !isShowCart)"
-          />
+        <li class="menu">
+          <span class="material-symbols-outlined white person" @click="loginAsync"> person </span>
+          <img src="/images/icon-cart.svg" class="cart" @click="() => (isShowCart = !isShowCart)" />
         </li>
       </ul>
     </nav>
@@ -189,7 +196,7 @@ header {
   background-color: black;
 }
 
-header span:hover {
+header span:not(.person):hover {
   color: var(--peru);
   cursor: pointer;
 }
@@ -232,6 +239,17 @@ ul {
   line-height: 25px;
   color: white;
   opacity: 75%;
+}
+
+.menu {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.person {
+  font-size: 30px;
+  cursor: pointer;
 }
 
 /* Tablet */

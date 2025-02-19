@@ -24,3 +24,5 @@ export const getProductCategoriesAsync = async () => await request.get('/product
 export const getProductCategoryAsync = async (id) => await request.get(`/productCategories/${id}`)
 
 export const getPaymentMethodsAsync = async () => await request.get(`/paymentMethods`)
+
+export const craeteOrderAsync = async (params) => await request.post('/orders', params)

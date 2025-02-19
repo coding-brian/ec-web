@@ -69,7 +69,7 @@ const checkout = () => {
               <div class="quantity-container">
                 <div class="quantity-selector">
                   <button class="black opacity-25" @click="minus(product)">-</button>
-                  <span>{{ product.count }}</span>
+                  <span>{{ product.quantity }}</span>
                   <button class="black opacity-25" @click="add(product)">+</button>
                 </div>
               </div>

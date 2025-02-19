@@ -7,10 +7,12 @@ import NavBar from '@/components/NavBar.vue'
 import { useRouter } from 'vue-router'
 import CustomInput from '@/components/CustomInput.vue'
 import GoBack from '@/components/Text/GoBack.vue'
+import { useEmail } from '@/composables/email'
 
 const router = useRouter()
-let timeCounter = ref(0)
+const timeCounter = ref(0)
 const captchaCode = ref('')
+const { checkEmail } = useEmail()
 
 const validate = (item) => {
   if (isNull(item.value) || isEmpty(item.value)) return false
@@ -74,17 +76,7 @@ const form = reactive({
     checked: true,
     erroMessage: 'Incorrect Format',
     validate: () => {
-      const checkEmail = () => {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-
-        if (!emailRegex.test(form.email.value)) {
-          return false
-        }
-
-        return true
-      }
-
-      form.email.checked = validate(form.email) && checkEmail()
+      form.email.checked = validate(form.email) && checkEmail(form.email.value)
 
       return form.email.checked
     },

@@ -120,6 +120,7 @@ const submitAsync = debounce(async () => {
         </span>
       </div>
       <button @click="submitAsync">確認</button>
+      <span class="register" @click="router.push({ name: 'register' })">這邊註冊</span>
     </div>
   </main>
 
@@ -141,5 +142,9 @@ const submitAsync = debounce(async () => {
 
 .error {
   color: red;
+}
+
+.register {
+  cursor: pointer;
 }
 </style>
