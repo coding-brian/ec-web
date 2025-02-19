@@ -10,11 +10,10 @@ import { isNull, isEmpty } from 'lodash-es'
 import { getPaymentMethodsAsync, craeteOrderAsync } from '@/api/ecapi'
 import PaymentMethodType from '@/const/paymentMethodType.json'
 import GoBack from '@/components/Text/GoBack.vue'
-import { useUserStore } from '@/stores/user'
 import { useEmail } from '@/composables/email'
+import PopupComponent from '@/components/PopupComponent.vue'
 
 const store = useCartStore()
-const userStore = useUserStore()
 const shopStore = useShopStore()
 const { checkEmail } = useEmail()
 
@@ -170,7 +169,6 @@ const createOrder = async () => {
     }
 
     const body = {
-      memberId: userStore.user.id,
       shippingFee: shopStore.shop.shippingFee,
       total: total.value,
       vat: vat.value,
@@ -385,6 +383,7 @@ onMounted(async () => {
   </main>
 
   <FooterComponent></FooterComponent>
+  <PopupComponent :order-id="'fcececb0-e022-4b19-a5b7-bd047eb08f04'"></PopupComponent>
 </template>
 
 <style scoped>

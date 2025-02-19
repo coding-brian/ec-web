@@ -38,6 +38,10 @@
   opacity: 40%;
 }
 
+.opacity-8 {
+  opacity: 8%;
+}
+
 .pointer {
   cursor: pointer;
 }

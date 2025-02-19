@@ -152,7 +152,7 @@ watch(
     <div class="content-container" v-if="productInBanner">
       <div class="content">
         <NewProductComponet class="white" v-if="productInBanner.isNewProduct" />
-        <span class="h1-manrope-bold white">{{ productInBanner.name }}</span>
+        <span class="content-title h1-manrope-bold white">{{ productInBanner.name }}</span>
         <span class="content-description">{{ productInBanner.description }}</span>
       </div>
       <button class="button-1-default">SEE PRODUCT</button>
@@ -301,10 +301,19 @@ ul {
   .content-container {
     padding-left: 0px;
     align-items: center;
+    max-width: initial;
+    min-width: 100%;
+    padding-left: 24px;
+    padding-right: 24px;
   }
 
   .content-container .content {
     text-align: center;
+    min-width: 100%;
+  }
+
+  .content-title {
+    font-size: 32px;
   }
 }
 </style>

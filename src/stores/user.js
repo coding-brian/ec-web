@@ -13,7 +13,7 @@ export const useUserStore = defineStore(
       id: null,
       name: null,
       email: null,
-      expireDateTime: null,
+      expireDateTimeStamp: null,
     })
 
     let timeoutId = null
@@ -42,7 +42,8 @@ export const useUserStore = defineStore(
 
     const setUser = (accessToken) => {
       const { name, email, exp, sub } = jwtDecode(accessToken)
-      user.expireDateTime = fromUnixTime(exp)
+
+      user.expireDateTimeStamp = exp
       user.email = email
       user.id = sub
       user.name = name
@@ -50,13 +51,16 @@ export const useUserStore = defineStore(
 
     const resetUser = () => {
       user.id = null
-      user.expireDateTime = null
+      user.expireDateTimeStamp = null
       user.email = null
       user.name = null
     }
 
     const IsAuthorizated = () => {
-      if (!token.value || !token.value.accessToken || new Date() > user.expireDateTime) return false
+      if (!token.value || !token.value.accessToken || !user.expireDateTimeStamp) return false
+
+      if (new Date() > fromUnixTime(user.expireDateTimeStamp)) return false
+
       return true
     }
 

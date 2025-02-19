@@ -25,7 +25,6 @@ const router = createRouter({
         },
       ],
     },
-    // TODO: 這裡要改成requireAuth: true
     {
       path: '/checkout',
       name: 'checkout',
@@ -51,7 +50,6 @@ const router = createRouter({
       component: () => import('../views/LoginPage.vue'),
       beforeEnter() {
         const userStore = useUserStore()
-        // TODO 如果已經登入狀態，再去登入頁，要導去特定一頁
         if (userStore.IsAuthorizated()) return { name: 'home' }
 
         return true
@@ -62,6 +60,7 @@ const router = createRouter({
 
 router.beforeResolve((to) => {
   const userStore = useUserStore()
+
   if (to.meta.requireAuth && !userStore.IsAuthorizated()) return { name: 'login' }
 
   return true

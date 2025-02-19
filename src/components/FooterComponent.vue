@@ -154,6 +154,8 @@ footer {
   footer {
     max-width: 100%;
     height: 654px;
+    padding-top: 52px;
+    padding-bottom: 38px;
   }
 
   .footer-content {
