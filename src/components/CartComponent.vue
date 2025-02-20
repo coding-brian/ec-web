@@ -12,17 +12,17 @@ const store = useCartStore()
 const total = computed(() => {
   let result = 0
   store.cart.products.forEach((product) => {
-    result += product.price.salePrice * product.count
+    result += product.price.salePrice * product.quantity
   })
 
   return result
 })
 
-const add = (product) => product.count++
+const add = (product) => product.quantity++
 
 const minus = (product) => {
-  product.count--
-  if (product.count === 0) {
+  product.quantity--
+  if (product.quantity === 0) {
     store.removeProduct(product)
   }
 }

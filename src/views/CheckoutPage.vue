@@ -18,7 +18,7 @@ const shopStore = useShopStore()
 const { checkEmail } = useEmail()
 
 const paymentMethods = ref(null)
-
+const orderId = ref(null)
 const total = computed(() =>
   store.cart.products.reduce((sum, item) => sum + item.price.salePrice * item.quantity, 0),
 )
@@ -187,7 +187,9 @@ const createOrder = async () => {
       },
       details,
     }
-    await craeteOrderAsync(body)
+
+    const { id } = await craeteOrderAsync(body)
+    orderId.value = id
   } catch (e) {
     console.log(e)
   }
@@ -383,7 +385,7 @@ onMounted(async () => {
   </main>
 
   <FooterComponent></FooterComponent>
-  <PopupComponent :order-id="'fcececb0-e022-4b19-a5b7-bd047eb08f04'"></PopupComponent>
+  <PopupComponent :order-id="orderId" v-if="orderId"></PopupComponent>
 </template>
 
 <style scoped>

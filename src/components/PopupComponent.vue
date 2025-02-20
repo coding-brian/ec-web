@@ -1,6 +1,6 @@
 <script setup>
 import { getOrderAsync } from '@/api/ecapi'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import MaskComponent from './MaskComponent.vue'
 import { useDeviceSize } from '@/composables/deviceSize'
 import { useRouter } from 'vue-router'
@@ -9,9 +9,21 @@ const props = defineProps({ orderId: { type: String, default: null } })
 const router = useRouter()
 const { objectProperty } = useDeviceSize()
 
+const isShowMore = ref(false)
+
 const order = ref(null)
 
 const getImages = (images) => images.filter((image) => image[objectProperty] && !image.isBanner)
+
+const orderDetails = computed(() => {
+  console.log()
+
+  if (isShowMore.value) {
+    return order.value.details
+  } else {
+    return order.value.details.slice(0, 1)
+  }
+})
 
 const goHome = () => {
   router.push({ name: 'home' })
@@ -32,9 +44,9 @@ onMounted(async () => {
           >You will receive an email confirmation shortly.</span
         >
         <div class="detail">
-          <div>
-            <div class="item-container">
-              <div class="item" v-for="detail in order.details" :key="detail.id">
+          <div class="item-container">
+            <div>
+              <div class="item" v-for="detail in orderDetails" :key="detail.id">
                 <img class="item-image" :src="getImages(detail.product.images)[0].url" alt="" />
                 <div class="item-description">
                   <span class="body-manrope-medium black">{{ detail.product.shortName }}</span>
@@ -42,17 +54,18 @@ onMounted(async () => {
                 </div>
                 <span class="body-manrope-medium opacity-50 black">x{{ detail.quantity }}</span>
               </div>
-              <span
-                class="else-item opacity-50 black"
-                v-if="order.details && order.details.length > 1"
-              >
-                and {{ order.details.length - 1 }} other item(s)
-              </span>
             </div>
+            <span
+              class="else-item opacity-50 black"
+              v-if="order.details && order.details.length > 1"
+              @click="() => (isShowMore = !isShowMore)"
+            >
+              and {{ order.details.length - 1 }} other item(s)
+            </span>
           </div>
           <div>
             <span class="body-manrope-medium opacity-50 white">GRAND TOTAL</span>
-            <span class="detail-amount white">${{ order.grantTotal }}</span>
+            <span class="detail-amount white">${{ order.grandTotal }}</span>
           </div>
         </div>
         <button class="button-1-default" @click="goHome">BACK TO HOME</button>
@@ -121,11 +134,14 @@ onMounted(async () => {
   padding: 24px;
 }
 
+.item-container > div:first-child {
+  border-bottom: 1px rgba(0, 0, 0, 0.08) solid;
+}
+
 .item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px rgba(0, 0, 0, 0.08) solid;
   padding-bottom: 12px;
 }
 
@@ -151,6 +167,7 @@ onMounted(async () => {
   letter-spacing: -0.21px;
   text-align: center;
   padding-top: 12px;
+  cursor: pointer;
 }
 
 /* Mobile */
