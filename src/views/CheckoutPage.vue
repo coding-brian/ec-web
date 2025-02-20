@@ -6,7 +6,7 @@ import RadioComponent from '@/components/RadioComponent.vue'
 import { computed, onMounted, reactive, ref } from 'vue'
 import { useCartStore } from '@/stores/cart'
 import { useShopStore } from '@/stores/shop'
-import { isNull, isEmpty } from 'lodash-es'
+import { isNull, isEmpty, debounce } from 'lodash-es'
 import { getPaymentMethodsAsync, craeteOrderAsync } from '@/api/ecapi'
 import PaymentMethodType from '@/const/paymentMethodType.json'
 import GoBack from '@/components/Text/GoBack.vue'
@@ -153,7 +153,7 @@ const check = () => {
   return result.every((item) => item)
 }
 
-const createOrder = async () => {
+const createOrder = debounce(async () => {
   try {
     if (!check()) return false
 
@@ -193,7 +193,7 @@ const createOrder = async () => {
   } catch (e) {
     console.log(e)
   }
-}
+}, 500)
 
 const vat = computed(() => {
   if (shopStore.shop) {
