@@ -80,8 +80,6 @@ export const useUserStore = defineStore(
       clearTimeout(timeoutId)
       tokenStore.resetToken()
       resetUser()
-
-      location.reload(true)
     }
 
     return { user, userLoginAsync, refreshUserAsync, IsAuthorizated, userLogout }

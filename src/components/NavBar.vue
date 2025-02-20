@@ -17,6 +17,7 @@ const router = useRouter()
 const route = useRoute()
 const userStore = useUserStore()
 
+const isShowCenter = ref(false)
 const { getDeviceType } = useDeviceType()
 const { objectProperty } = useDeviceSize()
 const { productCategories, productCategory } = storeToRefs(useProductCategoryStore())
@@ -52,8 +53,7 @@ const getImage = (images) => {
 
 const loginAsync = async () => {
   if (userStore.IsAuthorizated()) {
-    //TODO: 會員中心
-    console.log('去會員中心')
+    isShowCenter.value = !isShowCenter.value
   } else {
     router.push({ name: 'login' })
   }
@@ -142,7 +142,13 @@ watch(
         </template>
         <CartComponent v-model:is-show="isShowCart"></CartComponent>
         <li class="menu">
-          <span class="material-symbols-outlined white person" @click="loginAsync"> person </span>
+          <div class="center-container">
+            <span class="material-symbols-outlined white person" @click="loginAsync"> person </span>
+            <ul class="center" v-if="userStore.IsAuthorizated() && isShowCenter">
+              <li><span>會員中心</span></li>
+              <li @click="userStore.userLogout()"><span>登出</span></li>
+            </ul>
+          </div>
           <img src="/images/icon-cart.svg" class="cart" @click="() => (isShowCart = !isShowCart)" />
         </li>
       </ul>
@@ -216,7 +222,7 @@ li {
   list-style: none;
 }
 
-ul {
+nav > ul {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -247,9 +253,32 @@ ul {
   gap: 16px;
 }
 
+.center-container {
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
 .person {
   font-size: 30px;
   cursor: pointer;
+  position: relative;
+}
+
+.center {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  align-items: center;
+  border-radius: 8px;
+  min-width: 200px;
+  position: absolute;
+  background-color: var(--american-silver);
+  top: 50px;
+  left: 0px;
+  transform: translateX(-50%);
 }
 
 /* Tablet */
@@ -262,11 +291,11 @@ ul {
     padding-right: 40px;
   }
 
-  ul {
+  nav > ul {
     min-width: auto;
   }
 
-  ul li:first-child {
+  nav > ul li:first-child {
     display: flex;
     gap: 42px;
   }
